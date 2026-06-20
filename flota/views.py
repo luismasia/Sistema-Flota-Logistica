@@ -1,7 +1,23 @@
 from django.urls import reverse_lazy
 from django.views.generic import TemplateView, ListView, DetailView, CreateView, UpdateView, DeleteView
-from .models import Camion, Chofer, Viaje
-from .forms import CamionForm, ChoferForm
+from .models import Empresa, Camion, Chofer, Viaje
+from .forms import EmpresaForm, CamionForm, ChoferForm
+
+class EmpresaUpdateView(UpdateView):
+    model = Empresa
+    form_class = EmpresaForm
+    template_name = 'form_generico.html'
+    success_url = reverse_lazy('inicio')
+
+    def get_object(self, queryset=None):
+        obj, created = Empresa.objects.get_or_create(id=1)
+        return obj
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['titulo'] = 'Configuración de la Empresa'
+        context['cancel_url'] = reverse_lazy('inicio')
+        return context
 
 class InicioView(TemplateView):
     template_name = 'inicio.html'
