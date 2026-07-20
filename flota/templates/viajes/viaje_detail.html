@@ -1,0 +1,100 @@
+{% extends 'base.html' %}
+
+{% block title %}Detalle del Viaje #{{ viaje.id }}{% endblock %}
+
+{% block contenido %}
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{% url 'viaje_list' %}">Viajes</a></li>
+                <li class="breadcrumb-item active">Detalle del Viaje #{{ viaje.id }}</li>
+            </ol>
+        </nav>
+
+        <div class="card shadow">
+            <div class="card-header bg-dark text-white d-flex justify-content-between align-items-center">
+                <h3 class="mb-0">Ficha del Viaje #{{ viaje.id }}</h3>
+                <span class="badge {{ viaje.color_estado }}">
+                    {{ viaje.get_estado_display }}
+                </span>
+            </div>
+            
+            <div class="card-body">
+                <h5 class="border-bottom pb-2 text-primary">Ruta y Carga</h5>
+                <div class="row mb-2">
+                    <div class="col-sm-4 fw-bold">Origen -> Destino:</div>
+                    <div class="col-sm-8">{{ viaje.ciudad_origen }}, {{ viaje.provincia_origen }} a {{ viaje.ciudad_destino }}, {{ viaje.provincia_destino }}</div>
+                </div>
+                <div class="row mb-2">
+                    <div class="col-sm-4 fw-bold">Carga / Mercadería:</div>
+                    <div class="col-sm-8">{{ viaje.carga }}</div>
+                </div>
+                <div class="row mb-2">
+                    <div class="col-sm-4 fw-bold">Distancia Total:</div>
+                    <div class="col-sm-8">{{ viaje.kilometros }} km</div>
+                </div>
+                <div class="row mb-4">
+                    <div class="col-sm-4 fw-bold">Combustible Estimado:</div>
+                    <div class="col-sm-8">
+                        {% if viaje.combustible_estimado %}
+                            {{ viaje.combustible_estimado }} Litros
+                        {% else %}
+                            <span class="text-muted">No especificado</span>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <h5 class="border-bottom pb-2 text-primary">Tiempos</h5>
+                <div class="row mb-2">
+                    <div class="col-sm-4 fw-bold">Fecha de Salida:</div>
+                    <div class="col-sm-8">{{ viaje.fecha_salida }}</div>
+                </div>
+                <div class="row mb-4">
+                    <div class="col-sm-4 fw-bold">Fecha de Llegada:</div>
+                    <div class="col-sm-8">
+                        {% if viaje.fecha_llegada %}
+                            {{ viaje.fecha_llegada }}
+                        {% else %}
+                            <span class="text-muted">Pendiente</span>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <h5 class="border-bottom pb-2 text-primary">Equipo</h5>
+                <div class="row mb-2">
+                    <div class="col-sm-4 fw-bold">Chofer:</div>
+                    <div class="col-sm-8">
+                        {% if viaje.chofer %}
+                            <a href="{% url 'chofer_detail' viaje.chofer.id %}" class="text-decoration-none">
+                                {{ viaje.chofer.apellido }}, {{ viaje.chofer.nombre }}
+                            </a>
+                        {% else %}
+                            <span class="text-muted">Sin asignar</span>
+                        {% endif %}
+                    </div>
+                </div>
+                <div class="row mb-4">
+                    <div class="col-sm-4 fw-bold">Camión:</div>
+                    <div class="col-sm-8">
+                        {% if viaje.camion %}
+                            <a href="{% url 'camion_detail' viaje.camion.id %}" class="text-decoration-none">
+                                {{ viaje.camion.patente }} - {{ viaje.camion.modelo }}
+                            </a>
+                        {% else %}
+                            <span class="text-muted">Sin asignar</span>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            
+            <div class="card-footer bg-light text-end">
+                <a href="{% url 'viaje_list' %}" class="btn btn-secondary">Volver al listado</a>
+                {% if viaje.estado != 'vencido' %}
+                    <a href="{% url 'viaje_update' viaje.pk %}" class="btn btn-warning">Editar Datos</a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

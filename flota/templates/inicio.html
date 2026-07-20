@@ -32,9 +32,9 @@
     <div class="col-md-4">
         <div class="card mb-4 shadow-sm">
             <div class="card-body">
-                <h5 class="card-title">En Curso</h5>
-                <p class="display-6 text-success">{{ viajes_activos }}</p>
-                <a href="#" class="btn btn-outline-success">Ver viajes</a>
+                <h5 class="card-title">Viajes</h5>
+                <p class="display-6">{{ total_viajes }}</p>
+                <a href="{% url 'viaje_list' %}" class="btn btn-outline-primary">Ver viajes</a>
             </div>
         </div>
     </div>

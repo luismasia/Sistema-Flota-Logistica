@@ -15,13 +15,13 @@ class ChoferAdmin(admin.ModelAdmin):
 
 @admin.register(Camion)
 class CamionAdmin(admin.ModelAdmin):
-    list_display = ('patente', 'modelo', 'año', 'estado', 'chofer_asignado')
+    list_display = ('patente', 'modelo', 'año', 'estado', 'chofer')
     list_filter = ('estado', 'modelo')
     search_fields = ('patente', 'modelo')
 
 @admin.register(Viaje)
 class ViajeAdmin(admin.ModelAdmin):
-    list_display = ('id', 'origen', 'destino', 'fecha', 'estado', 'chofer', 'camion_asignado')
-    list_filter = ('estado', 'fecha')
-    search_fields = ('origen', 'destino', 'carga')
-    date_hierarchy = 'fecha'
+    list_display = ('id', 'ciudad_origen', 'ciudad_destino', 'fecha_salida', 'fecha_llegada', 'estado', 'chofer', 'camion')
+    list_filter = ('estado', 'fecha_salida', 'fecha_llegada')
+    search_fields = ('ciudad_origen', 'provincia_origen', 'ciudad_destino', 'provincia_destino', 'carga')
+    date_hierarchy = 'fecha_salida'

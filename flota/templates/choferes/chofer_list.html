@@ -16,21 +16,27 @@
                     <th>Nombre</th>
                     <th>Fecha de ingreso</th>
                     <th>Estado</th>
+                    <th>Camión</th>                    
                     <th>Acciones</th>
                 </tr>
             </thead>
             <tbody>
                 {% for chofer in choferes %}
                 <tr>
-                    <td><strong>{{ chofer.apellido }}</strong> <strong>{{ chofer.nombre }}</strong></td>
+                    <td><strong>{{ chofer.apellido }}, </strong> <strong>{{ chofer.nombre }}</strong></td>
                     <td>{{ chofer.fecha_ingreso }}</td>
                     <td>
-                        {% if chofer.estado == 'activo' %}
-                            <span class="badge bg-success">Activo</span>
-                        {% else %}
-                            <span class="badge bg-danger">Inactivo</span>
-                        {% endif %}
+                        <span class="badge {{ chofer.color_estado }}">
+                            {{ chofer.get_estado_display }}
+                        </span>
                     </td>
+                    <td>
+                        {% if chofer.camion.first %}
+                            {{ chofer.camion.first }}
+                        {% else %}
+                            <span class="text-muted">Sin asignar</span>
+                        {% endif %}
+                    </td>                    
                     <td>
                         <div class="btn-group" role="group">
                             <a href="{% url 'chofer_detail' chofer.pk %}" class="btn btn-sm btn-outline-info">Ver</a>
@@ -41,7 +47,7 @@
                 </tr>
                 {% empty %}
                 <tr>
-                    <td colspan="6" class="text-center">No hay choferes registrados aún.</td>
+                    <td colspan="5" class="text-center">No hay choferes registrados aún.</td>
                 </tr>
                 {% endfor %}
             </tbody>

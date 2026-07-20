@@ -13,4 +13,9 @@ urlpatterns = [
     path('choferes/<int:pk>/', views.ChoferDetailView.as_view(), name='chofer_detail'),
     path('choferes/<int:pk>/editar/', views.ChoferUpdateView.as_view(), name='chofer_update'),
     path('choferes/<int:pk>/eliminar/', views.ChoferDeleteView.as_view(), name='chofer_delete'),
+    path('viajes/', views.ViajeListView.as_view(), name='viaje_list'),
+    path('viajes/nuevo/', views.ViajeCreateView.as_view(), name='viaje_create'),
+    path('viajes/<int:pk>/', views.ViajeDetailView.as_view(), name='viaje_detail'),
+    path('viajes/<int:pk>/editar/', views.ViajeUpdateView.as_view(), name='viaje_update'),
+    path('viajes/<int:pk>/eliminar/', views.ViajeDeleteView.as_view(), name='viaje_delete'),    
 ]

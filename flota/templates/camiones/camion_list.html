@@ -17,7 +17,7 @@
                     <th>Modelo</th>
                     <th>Año</th>
                     <th>Estado</th>
-                    <th>Chofer Asignado</th>
+                    <th>Chofer</th>
                     <th>Acciones</th>
                 </tr>
             </thead>
@@ -25,18 +25,21 @@
                 {% for camion in camiones %}
                 <tr>
                     <td><strong>{{ camion.patente }}</strong></td>
-                    <td>{{ camion.modelo }}</td>
-                    <td>{{ camion.año }}</td>
                     <td>
-                        {% if camion.estado == 'activo' %}
-                            <span class="badge bg-success">Activo</span>
-                        {% else %}
-                            <span class="badge bg-danger">Inactivo</span>
+                        {{ camion.modelo }}
+                        {% if camion.multas %}
+                            <span title="Este camión posee infracciones">👮🏻‍♂️</span>
                         {% endif %}
                     </td>
+                    <td>{{ camion.año }}</td>
                     <td>
-                        {% if camion.chofer_asignado %}
-                            {{ camion.chofer_asignado }}
+                        <span class="badge {{ camion.color_estado }}">
+                            {{ camion.get_estado_display }}
+                        </span>
+                    </td>
+                    <td>
+                        {% if camion.chofer %}
+                            {{ camion.chofer }}
                         {% else %}
                             <span class="text-muted">Sin asignar</span>
                         {% endif %}

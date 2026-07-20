@@ -5,14 +5,19 @@
     <div class="col-md-6">
         <div class="card border-danger shadow">
             <div class="card-header bg-danger text-white">
-                <h4 class="mb-0">¿Eliminar Camión?</h4>
+                <h4 class="mb-0">{{ titulo_alerta|default:'Confirmar Eliminación' }}</h4>
             </div>
             <div class="card-body text-center">
-                <p class="fs-5">¿Estás seguro de que querés eliminar el camión con patente <strong>{{ object.patente }}</strong>?</p>
+                <p class="fs-5">
+                    ¿Estás seguro de que querés eliminar el registro <strong>{{ object }}</strong>?
+                </p>
+                <div class="alert alert-warning small">
+                    Esta acción no se puede deshacer y podría afectar a otros registros vinculados.
+                </div>
                 <form method="post">
                     {% csrf_token %}
                     <button type="submit" class="btn btn-danger px-4">Sí, Eliminar</button>
-                    <a href="{% url 'camion_list' %}" class="btn btn-secondary px-4">Cancelar</a>
+                    <a href="javascript:history.back()" class="btn btn-secondary px-4">Cancelar</a>
                 </form>
             </div>
         </div>

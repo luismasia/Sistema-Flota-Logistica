@@ -1,7 +1,7 @@
 from django.urls import reverse_lazy
 from django.views.generic import TemplateView, ListView, DetailView, CreateView, UpdateView, DeleteView
 from .models import Empresa, Camion, Chofer, Viaje
-from .forms import EmpresaForm, CamionForm, ChoferForm
+from .forms import EmpresaForm, CamionForm, ChoferForm, ViajeForm
 
 class EmpresaUpdateView(UpdateView):
     model = Empresa
@@ -26,7 +26,7 @@ class InicioView(TemplateView):
         context = super().get_context_data(**kwargs)
         context['total_camiones'] = Camion.objects.count()
         context['total_choferes'] = Chofer.objects.count()
-        context['viajes_activos'] = Viaje.objects.filter(estado='en_curso').count()
+        context['total_viajes'] = Viaje.objects.count()
         return context
 
 class CamionListView(ListView):
@@ -65,7 +65,7 @@ class CamionUpdateView(UpdateView):
 
 class CamionDeleteView(DeleteView):
     model = Camion
-    template_name = 'camiones/camion_confirm_delete.html'
+    template_name = 'confirmar_eliminacion.html'
     success_url = reverse_lazy('camion_list')
 
 class ChoferListView(ListView):
@@ -104,5 +104,44 @@ class ChoferUpdateView(UpdateView):
 
 class ChoferDeleteView(DeleteView):
     model = Chofer
-    template_name = 'choferes/chofer_confirm_delete.html'
+    template_name = 'confirmar_eliminacion.html'
     success_url = reverse_lazy('chofer_list')
+
+class ViajeListView(ListView):
+    model = Viaje
+    template_name = 'viajes/viaje_list.html'
+    context_object_name = 'viajes'
+
+class ViajeDetailView(DetailView):
+    model = Viaje
+    template_name = 'viajes/viaje_detail.html'
+    context_object_name = 'viaje'
+
+class ViajeCreateView(CreateView):
+    model = Viaje
+    form_class = ViajeForm
+    template_name = 'form_generico.html'
+    success_url = reverse_lazy('viaje_list')
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['titulo'] = 'Registrar nuevo viaje'
+        context['cancel_url'] = reverse_lazy('viaje_list')
+        return context    
+
+class ViajeUpdateView(UpdateView):
+    model = Viaje
+    form_class = ViajeForm
+    template_name = 'form_generico.html'
+    success_url = reverse_lazy('viaje_list')
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['titulo'] = f'Actualizar datos del Viaje #{self.object.id}'
+        context['cancel_url'] = reverse_lazy('viaje_list')
+        return context
+
+class ViajeDeleteView(DeleteView):
+    model = Viaje
+    template_name = 'confirmar_eliminacion.html'
+    success_url = reverse_lazy('viaje_list')

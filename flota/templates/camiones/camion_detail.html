@@ -15,10 +15,11 @@
         <div class="card shadow">
             <div class="card-header bg-dark text-white d-flex justify-content-between align-items-center">
                 <h3 class="mb-0">Ficha del Vehículo</h3>
-                <span class="badge {% if camion.estado == 'activo' %}bg-success{% else %}bg-danger{% endif %}">
+                <span class="badge {{ camion.color_estado }}">
                     {{ camion.get_estado_display }}
                 </span>
             </div>
+
             <div class="card-body">
                 <div class="row mb-3">
                     <div class="col-sm-4 fw-bold">Patente:</div>
@@ -36,18 +37,33 @@
                     <div class="col-sm-4 fw-bold">Kilometraje:</div>
                     <div class="col-sm-8">{{ camion.kilometraje }} km</div>
                 </div>
+
                 <hr>
+
                 <div class="row mb-3">
-                    <div class="col-sm-4 fw-bold">Chofer Asignado:</div>
+                    <div class="col-sm-4 fw-bold">Chofer:</div>
                     <div class="col-sm-8">
-                        {% if camion.chofer_asignado %}
-                            {{ camion.chofer_asignado.nombre }} {{ camion.chofer_asignado.apellido }}
+                        {% if camion.chofer %}
+                            <a href="{% url 'chofer_detail' camion.chofer.id %}" class="text-decoration-none">
+                                {{ camion.chofer.nombre }} {{ camion.chofer.apellido }}
+                            </a>
                         {% else %}
                             <span class="text-muted">Sin asignar</span>
                         {% endif %}
                     </div>
+                </div> 
+                <div class="row mb-3">
+                    <div class="col-sm-4 fw-bold">Infracciones:</div>
+                    <div class="col-sm-8">
+                        {% if camion.multas %}
+                            Sí
+                        {% else %}
+                            No
+                        {% endif %}
+                    </div>
                 </div>
             </div>
+
             <div class="card-footer bg-light text-end">
                 <a href="{% url 'camion_list' %}" class="btn btn-secondary">Volver al listado</a>
                 <a href="{% url 'camion_update' camion.pk %}" class="btn btn-warning">Editar Datos</a>
