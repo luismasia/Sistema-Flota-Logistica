@@ -90,7 +90,7 @@
             
             <div class="card-footer bg-light text-end">
                 <a href="{% url 'viaje_list' %}" class="btn btn-secondary">Volver al listado</a>
-                {% if viaje.estado != 'vencido' %}
+                {% if viaje.estado == 'pendiente' or viaje.estado == 'en_curso' %}
                     <a href="{% url 'viaje_update' viaje.pk %}" class="btn btn-warning">Editar Datos</a>
                 {% endif %}
             </div>

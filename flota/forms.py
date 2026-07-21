@@ -44,6 +44,10 @@ class CamionForm(forms.ModelForm):
                 self.fields['chofer'].queryset = Chofer.objects.filter(
                     estado='disponible', camion__isnull=True
                 )
+
+            if self.instance.estado == 'en_viaje':
+                for field_name in self.fields:
+                    self.fields[field_name].disabled = True
         else:
             self.fields['chofer'].queryset = Chofer.objects.filter(
                 estado='disponible', camion__isnull=True
@@ -66,8 +70,15 @@ class ChoferForm(forms.ModelForm):
         
         if not self.instance.pk:
             self.fields.pop('estado')
-        
-        self.fields['estado'].choices = [opcion for opcion in self.fields['estado'].choices if opcion[0] != 'en_viaje']
+        else:
+            self.fields['estado'].choices = [
+                opcion for opcion in self.fields['estado'].choices 
+                if opcion[0] != 'en_viaje'
+            ]
+            
+            if self.instance.estado == 'en_viaje':
+                for field_name in self.fields:
+                    self.fields[field_name].disabled = True
 
 class ViajeForm(forms.ModelForm):
     class Meta:
@@ -98,21 +109,34 @@ class ViajeForm(forms.ModelForm):
         self.fields['chofer'].empty_label = 'Seleccione un chofer'
 
         if self.instance and self.instance.pk:
-            q_chofer = Q(camion__isnull=False)
+            q_chofer = Q(camion__isnull=False, estado='disponible')
             if self.instance.chofer:
                 q_chofer |= Q(id=self.instance.chofer.id)
             self.fields['chofer'].queryset = Chofer.objects.filter(q_chofer).distinct()
 
         else:
-            self.fields['chofer'].queryset = Chofer.objects.filter(camion__isnull=False).distinct()
+            self.fields['chofer'].queryset = Chofer.objects.filter(camion__isnull=False, estado='disponible').distinct()
         
-        self.fields['estado'].choices = [opcion for opcion in self.fields['estado'].choices if opcion[0] != 'vencido']
+        estado_actual = self.instance.estado if self.instance and self.instance.pk else 'pendiente'
+        
+        self.fields['estado'].choices = [
+            opcion for opcion in self.fields['estado'].choices 
+            if opcion[0] != 'vencido' 
+            and (opcion[0] != 'en_curso' or opcion[0] == estado_actual)
+            and (opcion[0] != 'completado' or estado_actual in ['en_curso', 'completado'])
+            and (opcion[0] != 'incidente' or opcion[0] == estado_actual)
+        ]
         
         if self.instance and not self.instance.chofer:
             self.fields['estado'].choices = [
                 ('pendiente', 'Pendiente'),
                 ('cancelado', 'Cancelado'),
             ]
-
-            self.fields['multas'].widget.attrs['disabled'] = True
-            self.fields['daños'].widget.attrs['disabled'] = True
+        
+        if self.instance and self.instance.estado == 'en_curso':
+            for field_name in self.fields:
+                if field_name not in ['daños', 'multas']:
+                    self.fields[field_name].disabled = True
+        else:
+            self.fields['daños'].disabled = True
+            self.fields['multas'].disabled = True

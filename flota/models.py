@@ -55,6 +55,15 @@ class Chofer(models.Model):
                 camion_asignado.estado = 'disponible'
                 camion_asignado.save()
     
+    def delete(self, *args, **kwargs):
+        viajes_activos = self.viaje.filter(estado='en_curso')
+        
+        for viaje_afectado in viajes_activos:
+            viaje_afectado.estado = 'incidente'
+            viaje_afectado.save()
+
+        super().delete(*args, **kwargs)
+    
     @property
     def color_estado(self):
         colores = {
@@ -100,6 +109,15 @@ class Camion(models.Model):
             
         super().save(*args, **kwargs)
     
+    def delete(self, *args, **kwargs):
+        viajes_activos = self.viaje.filter(estado='en_curso')
+        
+        for viaje_afectado in viajes_activos:
+            viaje_afectado.estado = 'incidente'
+            viaje_afectado.save()
+            
+        super().delete(*args, **kwargs)
+    
     @property
     def color_estado(self):
         colores = {
@@ -117,6 +135,7 @@ class Viaje(models.Model):
         ('completado', 'Completado'),
         ('cancelado', 'Cancelado'),
         ('vencido', 'Vencido'),
+        ('incidente', 'Incidente'),
     ]   
     ciudad_origen = models.CharField(max_length=100)
     provincia_origen = models.CharField(max_length=100)
@@ -144,7 +163,7 @@ class Viaje(models.Model):
         if self.pk:
             viaje_viejo = Viaje.objects.get(pk=self.pk)
 
-            if viaje_viejo.estado == 'vencido':
+            if viaje_viejo.estado in ['vencido', 'completado', 'cancelado', 'incidente']:
                 return
             
             if viaje_viejo.chofer and viaje_viejo.chofer != self.chofer:
@@ -157,28 +176,35 @@ class Viaje(models.Model):
                     self.chofer.save()
                 self.chofer = None
 
-        if self.chofer:
-            camion_chofer = self.chofer.camion.first()
-            self.camion = camion_chofer
-    
-            if self.estado == 'pendiente' or self.estado == 'cancelado':
+        if self.estado == 'pendiente':
+            if self.chofer:
+                self.camion = self.chofer.camion.first()
+            else:
+                self.camion = None
+                
+            if date.today() >= self.fecha_salida:
                 self.estado = 'en_curso'
-        else:
-            self.camion = None
-            
-            if self.estado != 'cancelado':
-                self.estado = 'pendiente'
-        
+                 
         if self.camion:
             self.camion.multas = self.multas
-            
-            if self.daños and self.estado in ['completado', 'cancelado']:
-                self.camion.daños = True
-                
+            self.camion.daños = self.daños
             self.camion.save()
         
-        if self.fecha_llegada and self.fecha_llegada < date.today():
-            if self.estado not in ['completado', 'cancelado']:
+        if self.estado == 'en_curso' and date.today() > self.fecha_llegada:
+            self.estado = 'completado'
+        
+        if self.estado == 'en_curso' and self.daños:
+            self.estado = 'incidente'
+
+        if self.estado == 'cancelado':
+            if self.chofer:
+                self.chofer.estado = 'disponible'
+                self.chofer.save()
+            self.chofer = None
+            self.camion = None
+        
+        if self.fecha_salida < date.today():
+            if self.estado == 'pendiente':
                 self.estado = 'vencido'
                 if self.chofer:
                     self.chofer.estado = 'disponible'
@@ -190,11 +216,18 @@ class Viaje(models.Model):
             if self.estado == 'en_curso':
                 self.chofer.estado = 'en_viaje'
                 self.chofer.save()
-            elif self.estado == 'completado':
+            elif self.estado in ['completado', 'incidente']:
                 self.chofer.estado = 'disponible'
                 self.chofer.save()
             
         super().save(*args, **kwargs)
+    
+    def delete(self, *args, **kwargs):
+        if self.estado == 'en_curso' and self.chofer:
+            self.chofer.estado = 'disponible'
+            self.chofer.save()
+            
+        super().delete(*args, **kwargs)
 
     @property
     def color_estado(self):
@@ -204,5 +237,6 @@ class Viaje(models.Model):
             'completado': 'bg-success',
             'cancelado': 'bg-danger',
             'vencido': 'bg-dark',
+            'incidente': 'bg-warning text-dark',
         }
         return colores.get(self.estado, 'bg-secondary')

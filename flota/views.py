@@ -1,5 +1,7 @@
 from django.urls import reverse_lazy
 from django.views.generic import TemplateView, ListView, DetailView, CreateView, UpdateView, DeleteView
+from django.shortcuts import redirect
+from django.contrib import messages
 from .models import Empresa, Camion, Chofer, Viaje
 from .forms import EmpresaForm, CamionForm, ChoferForm, ViajeForm
 
@@ -99,7 +101,7 @@ class ChoferUpdateView(UpdateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['titulo'] = f'Actualizar datos de {self.object.apellido}, {self.object.nombre}'
-        context['cancel_url'] = reverse_lazy('camion_list')
+        context['cancel_url'] = reverse_lazy('chofer_list')
         return context
 
 class ChoferDeleteView(DeleteView):
@@ -140,6 +142,14 @@ class ViajeUpdateView(UpdateView):
         context['titulo'] = f'Actualizar datos del Viaje #{self.object.id}'
         context['cancel_url'] = reverse_lazy('viaje_list')
         return context
+    
+    def dispatch(self, request, *args, **kwargs):
+        viaje = self.get_object()
+        if viaje.estado in ['vencido', 'completado', 'cancelado', 'incidente']:
+            messages.error(request, "No podés editar un viaje que ya fue cerrado.")
+            return redirect('viajes_list')
+            
+        return super().dispatch(request, *args, **kwargs)
 
 class ViajeDeleteView(DeleteView):
     model = Viaje
