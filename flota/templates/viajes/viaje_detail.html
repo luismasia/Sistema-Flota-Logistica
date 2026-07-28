@@ -7,7 +7,7 @@
     <div class="col-md-8">
         <nav aria-label="breadcrumb">
             <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="{% url 'viaje_list' %}">Viajes</a></li>
+                <li class="breadcrumb-item"><a href="{{ cancel_url }}">Viajes</a></li>
                 <li class="breadcrumb-item active">Detalle del Viaje #{{ viaje.id }}</li>
             </ol>
         </nav>
@@ -66,9 +66,15 @@
                     <div class="col-sm-4 fw-bold">Chofer:</div>
                     <div class="col-sm-8">
                         {% if viaje.chofer %}
-                            <a href="{% url 'chofer_detail' viaje.chofer.id %}" class="text-decoration-none">
-                                {{ viaje.chofer.apellido }}, {{ viaje.chofer.nombre }}
-                            </a>
+                            {% if sede_actual %}
+                                <a href="{% url 'sede_chofer_detail' sede_actual.pk viaje.chofer.pk %}" class="text-decoration-none">
+                                {{ viaje.chofer }}
+                                </a>
+                            {% else %}
+                                <a href="{% url 'chofer_detail' viaje.chofer.pk %}" class="text-decoration-none">
+                                {{ viaje.chofer }}
+                                </a>
+                            {% endif %}
                         {% else %}
                             <span class="text-muted">Sin asignar</span>
                         {% endif %}
@@ -78,9 +84,15 @@
                     <div class="col-sm-4 fw-bold">Camión:</div>
                     <div class="col-sm-8">
                         {% if viaje.camion %}
-                            <a href="{% url 'camion_detail' viaje.camion.id %}" class="text-decoration-none">
-                                {{ viaje.camion.patente }} - {{ viaje.camion.modelo }}
-                            </a>
+                            {% if sede_actual %}
+                                <a href="{% url 'sede_camion_detail' sede_actual.pk viaje.camion.pk %}" class="text-decoration-none">
+                                {{ viaje.camion }}
+                                </a>
+                            {% else %}
+                                <a href="{% url 'camion_detail' viaje.camion.pk %}" class="text-decoration-none">
+                                {{ viaje.camion }}
+                                </a>
+                            {% endif %}
                         {% else %}
                             <span class="text-muted">Sin asignar</span>
                         {% endif %}
@@ -89,9 +101,9 @@
             </div>
             
             <div class="card-footer bg-light text-end">
-                <a href="{% url 'viaje_list' %}" class="btn btn-secondary">Volver al listado</a>
+                <a href="{{ cancel_url }}" class="btn btn-secondary">Volver</a>
                 {% if viaje.estado == 'pendiente' or viaje.estado == 'en_curso' %}
-                    <a href="{% url 'viaje_update' viaje.pk %}" class="btn btn-warning">Editar Datos</a>
+                    <a href="{{ edit_url }}" class="btn btn-warning">Editar Datos</a>
                 {% endif %}
             </div>
         </div>

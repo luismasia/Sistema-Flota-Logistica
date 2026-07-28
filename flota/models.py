@@ -15,12 +15,11 @@ class Empresa(models.Model):
         return self.nombre
 
 class Sede(models.Model):
-    nombre = models.CharField(max_length=100)
     ciudad = models.CharField(max_length=100)
     provincia = models.CharField(max_length=100)
 
     def __str__(self):
-        return f"{self.nombre} - {self.ciudad}, {self.provincia}"
+        return f"Sede - {self.ciudad}, {self.provincia}"
     
 class Chofer(models.Model):
     ESTADOS = [
@@ -32,6 +31,7 @@ class Chofer(models.Model):
     apellido = models.CharField(max_length=100)
     fecha_ingreso = models.DateField()
     estado = models.CharField(max_length=10, choices=ESTADOS, default='disponible')
+    sede = models.ForeignKey(Sede, on_delete=models.CASCADE, related_name='choferes', null=True, blank=True)
 
     class Meta:
         verbose_name = "Chofer"
@@ -87,7 +87,8 @@ class Camion(models.Model):
     estado = models.CharField(max_length=10, choices=ESTADOS, default='disponible')
     chofer = models.ForeignKey(Chofer, on_delete=models.SET_NULL, null=True, blank=True, related_name='camion')
     daños = models.BooleanField(default=False)
-    multas = models.BooleanField(default=False)    
+    multas = models.BooleanField(default=False)
+    sede = models.ForeignKey(Sede, on_delete=models.CASCADE, related_name='camiones', null=True, blank=True)
 
     class Meta:
         verbose_name = "Camión"
@@ -150,7 +151,8 @@ class Viaje(models.Model):
     carga = models.CharField(max_length=100)
     estado = models.CharField(max_length=30, choices=ESTADOS, default='pendiente')
     daños = models.BooleanField(default=False)
-    multas = models.BooleanField(default=False)    
+    multas = models.BooleanField(default=False)
+    sede = models.ForeignKey(Sede, on_delete=models.CASCADE, related_name='viajes', null=True, blank=True)
 
     class Meta:
         verbose_name = 'Viaje'
@@ -182,7 +184,7 @@ class Viaje(models.Model):
             else:
                 self.camion = None
                 
-            if date.today() >= self.fecha_salida:
+            if date.today() >= self.fecha_salida and self.chofer:
                 self.estado = 'en_curso'
                  
         if self.camion:

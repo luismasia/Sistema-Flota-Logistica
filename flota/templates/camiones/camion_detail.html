@@ -7,7 +7,7 @@
     <div class="col-md-8">
         <nav aria-label="breadcrumb">
             <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="{% url 'camion_list' %}">Flota</a></li>
+                <li class="breadcrumb-item"><a href="{{ cancel_url }}">Flota</a></li>
                 <li class="breadcrumb-item active">Detalle: {{ camion.patente }}</li>
             </ol>
         </nav>
@@ -44,14 +44,32 @@
                     <div class="col-sm-4 fw-bold">Chofer:</div>
                     <div class="col-sm-8">
                         {% if camion.chofer %}
-                            <a href="{% url 'chofer_detail' camion.chofer.id %}" class="text-decoration-none">
-                                {{ camion.chofer.nombre }} {{ camion.chofer.apellido }}
+                            {% if sede_actual %}
+                                <a href="{% url 'sede_chofer_detail' sede_actual.pk camion.chofer.pk %}" class="text-decoration-none">
+                                {{ camion.chofer }}
+                                </a>
+                            {% else %}
+                                <a href="{% url 'chofer_detail' camion.chofer.pk %}" class="text-decoration-none">
+                                {{ camion.chofer }}
+                                </a>
+                            {% endif %}
+                        {% else %}
+                            <span class="text-muted">Sin asignar</span>
+                        {% endif %}
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <div class="col-sm-4 fw-bold">Sede:</div>
+                    <div class="col-sm-8">
+                        {% if camion.sede %}
+                            <a href="{% url 'sede_detail' camion.sede.id %}" class="text-decoration-none">
+                                {{ camion.sede.ciudad }}
                             </a>
                         {% else %}
                             <span class="text-muted">Sin asignar</span>
                         {% endif %}
                     </div>
-                </div> 
+                </div>
                 <div class="row mb-3">
                     <div class="col-sm-4 fw-bold">Infracciones:</div>
                     <div class="col-sm-8">
@@ -65,8 +83,8 @@
             </div>
 
             <div class="card-footer bg-light text-end">
-                <a href="{% url 'camion_list' %}" class="btn btn-secondary">Volver al listado</a>
-                <a href="{% url 'camion_update' camion.pk %}" class="btn btn-warning">Editar Datos</a>
+                <a href="{{ cancel_url }}" class="btn btn-secondary">Volver</a>
+                <a href="{{ edit_url }}" class="btn btn-warning">Editar Datos</a>
             </div>
         </div>
     </div>

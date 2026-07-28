@@ -16,6 +16,7 @@
                 </div>
                 <form method="post">
                     {% csrf_token %}
+                    <input type="hidden" name="next" id="next_url" value="">
                     <button type="submit" class="btn btn-danger px-4">Sí, Eliminar</button>
                     <a href="javascript:history.back()" class="btn btn-secondary px-4">Cancelar</a>
                 </form>
@@ -23,4 +24,15 @@
         </div>
     </div>
 </div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const anteriorUrl = document.referrer;
+        const nextInput = document.getElementById("next_url");
+        
+        if (anteriorUrl && nextInput) {
+            nextInput.value = anteriorUrl;
+        }
+    });
+</script>
 {% endblock %}

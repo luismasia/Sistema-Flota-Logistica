@@ -1,0 +1,161 @@
+{% extends 'base.html' %}
+
+{% block title %}Central de Mantenimiento{% endblock %}
+
+{% block contenido %}
+
+{% if messages %}
+    <div class="container mt-3">
+        {% for message in messages %}
+            <div class="alert alert-{{ message.tags }} alert-dismissible fade show shadow-sm" role="alert">
+                {{ message }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        {% endfor %}
+    </div>
+{% endif %}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h2 class="mb-0 fw-bold">
+        <i class="bi bi-tools me-2"></i>Central de Mantenimiento y Administración
+        {% if sede_actual %}
+            <span class="text-muted fs-4">| Sede {{ sede_actual.ciudad }}</span>
+        {% endif %}
+    </h2>
+    <a href="{{ volver_url }}" class="btn btn-outline-secondary">
+        &larr; Volver a Gestión de Flota
+    </a>
+</div>
+
+<div class="row g-4 align-items-start">
+    <div class="col-lg-6">
+        <div class="card shadow-sm border-0 rounded-3">
+            <div class="card-header bg-warning-subtle text-dark py-3 border-0 d-flex justify-content-between align-items-center">
+                <h5 class="mb-0 fw-bold"><i class="bi bi-wrench-adjustable me-2"></i>Taller</h5>
+                <span class="badge bg-warning text-dark">{{ camiones_danados|length }} con daños</span>
+            </div>
+            <div class="card-body p-0 d-flex flex-column">
+                <form method="post" action="{% if sede_actual %}{% url 'sede_mantenimiento' sede_actual.pk %}{% else %}{% url 'mantenimiento' %}{% endif %}" id="form-taller">
+                    {% csrf_token %}
+                    <input type="hidden" name="accion" value="reparar">
+                    <div class="table-responsive" style="max-height: 400px; overflow-y: auto;">
+                        <table class="table table-hover align-middle mb-0">
+                            <thead class="table-light sticky-top">
+                                <tr>
+                                    <th class="ps-3" style="width: 40px;">
+                                        <input class="form-check-input" type="checkbox" id="select-all-taller" title="Seleccionar todos">
+                                    </th>
+                                    <th>Patente</th>
+                                    <th>Modelo</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for camion in camiones_danados %}
+                                <tr>
+                                    <td class="ps-3">
+                                        <input class="form-check-input check-taller" type="checkbox" name="camiones_taller" value="{{ camion.id }}">
+                                    </td>
+                                    <td>
+                                        <span class="badge bg-light text-dark border font-monospace">{{ camion.patente }}</span>
+                                    </td>
+                                    <td class="fw-medium">{{ camion.modelo }}</td>
+                                </tr>
+                                {% empty %}
+                                <tr>
+                                    <td colspan="3" class="text-center py-5 text-muted">
+                                        <i class="bi bi-check-circle-fill text-success fs-3 d-block mb-2"></i>
+                                        No hay camiones dañados.
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                    {% if camiones_danados %}
+                    <div class="p-3 bg-light border-top text-end">
+                        <button type="submit" class="btn btn-warning fw-bold shadow-sm">
+                            <i class="bi bi-tools me-1"></i> Reparar
+                        </button>
+                    </div>
+                    {% endif %}
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-6">
+        <div class="card shadow-sm border-0 rounded-3">
+            <div class="card-header bg-danger-subtle text-danger py-3 border-0 d-flex justify-content-between align-items-center">
+                <h5 class="mb-0 fw-bold"><i class="bi bi-file-earmark-ruled me-2"></i>Gestión de Infracciones</h5>
+                <span class="badge bg-danger">{{ camiones_multados|length }} con multas</span>
+            </div>
+            <div class="card-body p-0 d-flex flex-column">
+                <form method="post" action="{% if sede_actual %}{% url 'sede_mantenimiento' sede_actual.pk %}{% else %}{% url 'mantenimiento' %}{% endif %}" id="form-multas">
+                    {% csrf_token %}
+                    <input type="hidden" name="accion" value="pagar_multas">
+                    <div class="table-responsive" style="max-height: 400px; overflow-y: auto;">
+                        <table class="table table-hover align-middle mb-0">
+                            <thead class="table-light sticky-top">
+                                <tr>
+                                    <th class="ps-3" style="width: 40px;">
+                                        <input class="form-check-input" type="checkbox" id="select-all-multas" title="Seleccionar todos">
+                                    </th>
+                                    <th>Patente</th>
+                                    <th>Modelo</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for camion in camiones_multados %}
+                                <tr>
+                                    <td class="ps-3">
+                                        <input class="form-check-input check-multas" type="checkbox" name="camiones_multas" value="{{ camion.id }}">
+                                    </td>
+                                    <td>
+                                        <span class="badge bg-light text-dark border font-monospace">{{ camion.patente }}</span>
+                                    </td>
+                                    <td class="fw-medium">{{ camion.modelo }}</td>
+                                </tr>
+                                {% empty %}
+                                <tr>
+                                    <td colspan="3" class="text-center py-5 text-muted">
+                                        <i class="bi bi-shield-check text-success fs-3 d-block mb-2"></i>
+                                        No se registraron Infracciones.
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                    {% if camiones_multados %}
+                    <div class="p-3 bg-light border-top text-end">
+                        <button type="submit" class="btn btn-success fw-bold shadow-sm">
+                            <i class="bi bi-cash-stack me-1"></i> Pagar Multas Seleccionadas
+                        </button>
+                    </div>
+                    {% endif %}
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const selectAllTaller = document.getElementById("select-all-taller");
+        if (selectAllTaller) {
+            selectAllTaller.addEventListener("change", function() {
+                document.querySelectorAll(".check-taller").forEach(checkbox => {
+                    checkbox.checked = selectAllTaller.checked;
+                });
+            });
+        }
+
+        const selectAllMultas = document.getElementById("select-all-multas");
+        if (selectAllMultas) {
+            selectAllMultas.addEventListener("change", function() {
+                document.querySelectorAll(".check-multas").forEach(checkbox => {
+                    checkbox.checked = selectAllMultas.checked;
+                });
+            });
+        }
+    });
+</script>
+{% endblock %}

@@ -4,61 +4,230 @@
 
 {% block contenido %}
 <div class="d-flex justify-content-between align-items-center mb-4">
-    <h2>Gestión de Flota</h2>
-    <a href="{% url 'camion_create' %}" class="btn btn-primary">+ Nuevo Camión</a>
+    <h2 class="mb-0 fw-bold">
+        <i class="bi bi-truck me-2"></i>Gestión de Flota
+        {% if sede_actual %}
+            <span class="text-muted fs-4">| Sede {{ sede_actual.ciudad }}</span>
+        {% endif %}
+    </h2>
+    <div>
+        {% if sede_actual %}
+            <a href="{% url 'sede_detail' sede_actual.pk %}" class="btn btn-outline-secondary me-2">
+                &larr; Volver
+            </a>
+            <a href="{% url 'sede_mantenimiento' sede_actual.pk %}" class="btn btn-warning shadow-sm me-2 fw-medium">
+                <i class="bi bi-tools me-1"></i> Mantenimiento
+            </a>
+            <a href="{% url 'sede_camion_create' sede_actual.pk %}" class="btn btn-primary shadow-sm">
+                + Nuevo Camión
+            </a>
+        {% else %}
+            <a href="{% url 'inicio' %}" class="btn btn-outline-secondary me-2">
+                &larr; Volver
+            </a>
+            <a href="{% url 'mantenimiento' %}" class="btn btn-warning shadow-sm me-2 fw-medium">
+                <i class="bi bi-tools me-1"></i> Mantenimiento
+            </a>
+            <a href="{% url 'camion_create' %}" class="btn btn-primary shadow-sm">
+                + Nuevo Camión
+            </a>
+        {% endif %}
+    </div>
 </div>
 
-<div class="card shadow">
-    <div class="card-body">
-        <table class="table table-hover">
-            <thead class="table-dark">
-                <tr>
-                    <th>Patente</th>
-                    <th>Modelo</th>
-                    <th>Año</th>
-                    <th>Estado</th>
-                    <th>Chofer</th>
-                    <th>Acciones</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for camion in camiones %}
-                <tr>
-                    <td><strong>{{ camion.patente }}</strong></td>
-                    <td>
-                        {{ camion.modelo }}
-                        {% if camion.multas %}
-                            <span title="Este camión posee infracciones">👮🏻‍♂️</span>
-                        {% endif %}
-                    </td>
-                    <td>{{ camion.año }}</td>
-                    <td>
-                        <span class="badge {{ camion.color_estado }}">
-                            {{ camion.get_estado_display }}
+<div class="card shadow-sm border-0 rounded-3 mb-4 bg-light">
+    <div class="card-body py-3">
+        <form method="get">
+            
+            <div class="row g-2 align-items-center mb-3 pb-3 border-bottom">
+                <div class="col-md-9 col-12">
+                    <div class="input-group input-group-sm">
+                        <span class="input-group-text bg-white border-end-0 text-muted">
+                            <i class="bi bi-search"></i>
                         </span>
-                    </td>
-                    <td>
-                        {% if camion.chofer %}
-                            {{ camion.chofer }}
-                        {% else %}
-                            <span class="text-muted">Sin asignar</span>
+                        <input type="text" name="busqueda" class="form-control border-start-0 ps-0" 
+                               placeholder="Buscar" 
+                               value="{{ filtros_actuales.busqueda|default:'' }}">
+                    </div>
+                </div>
+                <div class="col-md-3 col-12 d-flex gap-2">
+                    <button type="submit" class="btn btn-sm btn-primary flex-grow-1 fw-medium shadow-sm">
+                        Buscar
+                    </button>
+                    {% if filtros_actuales %}
+                        <a href="{% if sede_actual %}{% url 'sede_camion_list' sede_actual.id %}{% else %}{% url 'camion_list' %}{% endif %}" 
+                           class="btn btn-sm btn-outline-secondary px-3 d-flex align-items-center justify-content-center" 
+                           title="Restablecer toda la vista">
+                            <i class="bi bi-x-circle me-1"></i>Limpiar todo
+                        </a>
+                    {% endif %}
+                </div>
+            </div>
+            <div class="row g-3 align-items-end">
+                {% if not sede_actual %}
+                <div class="col-md-2 col-6">
+                    <label class="form-label small fw-bold text-secondary mb-1">Sede</label>
+                    <select name="sede" class="form-select form-select-sm" onchange="this.form.submit()">
+                        <option value="">Todas</option>
+                        {% for sede in sedes %}
+                            <option value="{{ sede.id }}" {% if filtros_actuales.sede == sede.id|stringformat:"i" %}selected{% endif %}>
+                                {{ sede.ciudad }}
+                            </option>
+                        {% endfor %}
+                    </select>
+                </div>
+                {% endif %}
+                <div class="col-md-2 col-6">
+                    <label class="form-label small fw-bold text-secondary mb-1">Estado</label>
+                    <select name="estado" class="form-select form-select-sm" onchange="this.form.submit()">
+                        <option value="">Todos</option>
+                        {% for clave, valor in estados_disponibles %}
+                            <option value="{{ clave }}" {% if filtros_actuales.estado == clave %}selected{% endif %}>
+                                {{ valor }}
+                            </option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="col-md-2 col-6">
+                    <label class="form-label small fw-bold text-secondary mb-1">Marca</label>
+                    <select name="marca" class="form-select form-select-sm" onchange="this.form.submit()">
+                        <option value="">Todas</option>
+                        {% for marca in marcas %}
+                            <option value="{{ marca }}" {% if filtros_actuales.marca == marca %}selected{% endif %}>
+                                {{ marca }}
+                            </option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="col-md-2 col-6">
+                    <label class="form-label small fw-bold text-secondary mb-1">Año</label>
+                    <select name="año" class="form-select form-select-sm" onchange="this.form.submit()">
+                        <option value="">Todos</option>
+                        {% for anio in años_disponibles %}
+                            <option value="{{ anio }}" {% if filtros_actuales.año == anio|stringformat:"i" %}selected{% endif %}>
+                                {{ anio }}
+                            </option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="{% if not sede_actual %}col-md-4{% else %}col-md-6{% endif %} col-12 d-flex align-items-center justify-content-end gap-3 pt-2">
+                    <div class="form-check form-switch mb-0">
+                        <input class="form-check-input" type="checkbox" role="switch" name="daños" id="filtroDanos" 
+                               {% if filtros_actuales.daños %}checked{% endif %} onchange="this.form.submit()">
+                        <label class="form-check-label small fw-medium" for="filtroDanos">
+                            <i class="bi bi-wrench text-warning me-1"></i>Con Daños
+                        </label>
+                    </div>
+                    <div class="form-check form-switch mb-0">
+                        <input class="form-check-input" type="checkbox" role="switch" name="multas" id="filtroMultas" 
+                               {% if filtros_actuales.multas %}checked{% endif %} onchange="this.form.submit()">
+                        <label class="form-check-label small fw-medium" for="filtroMultas">
+                            <i class="bi bi-exclamation-circle text-danger me-1"></i>Con Multas
+                        </label>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div class="card shadow-sm border-0 rounded-3">
+    <div class="card-body p-0">
+        <div class="table-responsive">
+            <table class="table table-hover align-middle mb-0">
+                <thead class="table-dark">
+                    <tr>
+                        <th class="ps-3" style="width: 50px;">#</th>
+                        <th>Patente</th>
+                        <th>Modelo</th>
+                        <th>Año</th>
+                        <th>Estado</th>
+                        <th>Chofer</th>
+                        {% if not sede_actual %}
+                            <th>Sede</th>
                         {% endif %}
-                    </td>
-                    <td>
-                        <div class="btn-group" role="group">
-                            <a href="{% url 'camion_detail' camion.pk %}" class="btn btn-sm btn-outline-info">Ver</a>
-                            <a href="{% url 'camion_update' camion.pk %}" class="btn btn-sm btn-outline-warning">Editar</a>
-                            <a href="{% url 'camion_delete' camion.pk %}" class="btn btn-sm btn-outline-danger">Eliminar</a>
-                        </div>
-                    </td>
-                </tr>
-                {% empty %}
-                <tr>
-                    <td colspan="6" class="text-center">No hay camiones registrados aún.</td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
+                        <th class="text-end pe-3" style="min-width: 240px;">Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for camion in camiones %}
+                    <tr>
+                        <td class="ps-3 fw-bold text-secondary">{{ forloop.counter }}</td>
+                        
+                        <td>
+                            <span class="badge bg-light text-dark border font-monospace px-2 py-1 fs-6">
+                                {{ camion.patente }}
+                            </span>
+                        </td>
+                        
+                        <td class="fw-medium">
+                            {{ camion.modelo }}
+                            {% if camion.multas %}
+                                <span class="badge bg-danger-subtle text-danger border border-danger-subtle ms-1 px-2 py-1" 
+                                      title="Este camión registra infracciones o multas pendientes" 
+                                      style="cursor: help;">
+                                    🚨
+                                </span>
+                            {% endif %}
+                        </td>
+                        
+                        <td class="text-muted">{{ camion.año }}</td>
+                        
+                        <td>
+                            <span class="badge {{ camion.color_estado }} px-2 py-1">
+                                {{ camion.get_estado_display }}
+                            </span>
+                        </td>
+                        
+                        <td>
+                            {% if camion.chofer %}
+                                <span class="d-flex align-items-center">
+                                    <i class="bi bi-person-fill text-muted me-1"></i>
+                                    {{ camion.chofer }}
+                                </span>
+                            {% else %}
+                                <span class="text-muted fst-italic">Sin asignar</span>
+                            {% endif %}
+                        </td>
+                        
+                        {% if not sede_actual %}
+                            <td>
+                                {% if camion.sede %}
+                                    <span class="badge bg-secondary-subtle text-secondary border">
+                                        {{ camion.sede.ciudad }}
+                                    </span>
+                                {% else %}
+                                    <span class="text-muted fst-italic">Sin asignar</span>
+                                {% endif %}
+                            </td>
+                        {% endif %}
+                        
+                        <td class="text-end pe-3">
+                            <div class="btn-group shadow-sm" role="group">
+                                {% if sede_actual %}
+                                    <a href="{% url 'sede_camion_detail' sede_actual.pk camion.pk %}" class="btn btn-sm btn-outline-secondary" title="Ver detalle">Ver</a>
+                                    <a href="{% url 'sede_camion_update' sede_actual.pk camion.pk %}" class="btn btn-sm btn-outline-primary" title="Editar camión">Editar</a>
+                                    <a href="{% url 'sede_camion_trasladar' sede_actual.pk camion.pk %}" class="btn btn-sm btn-outline-dark {% if camion.estado == 'en_viaje' %}disabled{% endif %}" title="Trasladar de sede">Trasladar</a>
+                                {% else %}
+                                    <a href="{% url 'camion_detail' camion.pk %}" class="btn btn-sm btn-outline-secondary" title="Ver detalle">Ver</a>
+                                    <a href="{% url 'camion_update' camion.pk %}" class="btn btn-sm btn-outline-primary" title="Editar camión">Editar</a>
+                                    <a href="{% url 'camion_trasladar' camion.pk %}" class="btn btn-sm btn-outline-dark {% if camion.estado == 'en_viaje' %}disabled{% endif %}" title="Trasladar de sede">Trasladar</a>
+                                {% endif %}
+                                <a href="{% url 'camion_delete' camion.pk %}" class="btn btn-sm btn-outline-danger" title="Eliminar camión">Eliminar</a>
+                            </div>
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="8" class="text-center py-5 text-muted">
+                            <p class="mb-1 fs-5">No hay camiones registrados aún.</p>
+                            <small>Hacé clic en "+ Nuevo Camión" para empezar a cargar la flota.</small>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
     </div>
 </div>
 {% endblock %}

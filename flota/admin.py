@@ -3,9 +3,9 @@ from .models import Sede, Chofer, Camion, Viaje
 
 @admin.register(Sede)
 class SedeAdmin(admin.ModelAdmin):
-    list_display = ('nombre', 'ciudad', 'provincia')
+    list_display = ('ciudad', 'provincia')
     list_filter = ('provincia',)
-    search_fields = ('nombre', 'ciudad')
+    search_fields = ('ciudad', 'provincia')
 
 @admin.register(Chofer)
 class ChoferAdmin(admin.ModelAdmin):

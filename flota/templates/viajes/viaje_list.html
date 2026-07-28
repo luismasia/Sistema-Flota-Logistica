@@ -4,72 +4,242 @@
 
 {% block contenido %}
 <div class="d-flex justify-content-between align-items-center mb-4">
-    <h2>Gestión de Viajes</h2>
-    <a href="{% url 'viaje_create' %}" class="btn btn-primary">+ Nuevo Viaje</a>
+    <h2 class="mb-0 fw-bold">
+        <i class="bi bi-map me-2"></i>Gestión de Viajes
+        {% if sede_actual %}
+            <span class="text-muted fs-4">| Sede {{ sede_actual.ciudad }}</span>
+        {% endif %}
+    </h2>
+    <div>
+        {% if sede_actual %}
+            <a href="{% url 'sede_detail' sede_actual.pk %}" class="btn btn-outline-secondary me-2">
+                &larr; Volver
+            </a>
+            <a href="{% url 'sede_viaje_create' sede_actual.pk %}" class="btn btn-primary shadow-sm">
+                + Nuevo Viaje
+            </a>
+        {% else %}
+            <a href="{% url 'inicio' %}" class="btn btn-outline-secondary me-2">
+                &larr; Volver
+            </a>
+            <a href="{% url 'viaje_create' %}" class="btn btn-primary shadow-sm">
+                + Nuevo Viaje
+            </a>
+        {% endif %}
+    </div>
 </div>
 
-<div class="card shadow">
-    <div class="card-body">
-        <table class="table table-hover">
-            <thead class="table-dark">
-                <tr>
-                    <th>Origen -> Destino</th>
-                    <th>Fecha de Salida</th>
-                    <th>Fecha de Llegada</th>
-                    <th>Carga</th>
-                    <th>Estado</th>
-                    <th>Chofer</th>
-                    <th>Camión</th>
-                    <th>Acciones</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for viaje in viajes %}
-                <tr>
-                    <td><strong>{{ viaje.ciudad_origen }}</strong> a <strong>{{ viaje.ciudad_destino }}</strong>
-                        {% if viaje.multas %}
-                            <span title="Se registraron infracciones">👮🏻‍♂️</span>
-                        {% endif %}
-                    </td>
-                    <td>{{ viaje.fecha_salida }}</td>
-                    <td>{{ viaje.fecha_llegada }}</td>
-                    <td>{{ viaje.carga }}</td>
-                    <td>
-                        <span class="badge {{ viaje.color_estado }}">
-                            {{ viaje.get_estado_display }}
+<div class="card shadow-sm border-0 rounded-3 mb-4 bg-light">
+    <div class="card-body py-3">
+        <form method="get">
+            
+            <div class="row g-2 align-items-center mb-3 pb-3 border-bottom">
+                <div class="col-md-10 col-12">
+                    <div class="input-group input-group-sm">
+                        <span class="input-group-text bg-white border-end-0 text-muted">
+                            <i class="bi bi-search"></i>
                         </span>
-                    </td>
-                    <td>
-                        {% if viaje.chofer %}
-                            {{ viaje.chofer.apellido }}, {{ viaje.chofer.nombre }}
+                        <input type="text" name="busqueda" class="form-control border-start-0 ps-0" 
+                               placeholder="Buscar" 
+                               value="{{ filtros_actuales.busqueda|default:'' }}">
+                    </div>
+                </div>
+                <div class="col-md-2 col-12 d-flex">
+                    <button type="submit" class="btn btn-sm btn-primary flex-grow-1 fw-medium shadow-sm">
+                        Buscar
+                    </button>
+                </div>
+            </div>
+
+            <div class="row g-3 align-items-end mb-3">
+                {% if not sede_actual %}
+                <div class="col-md-3 col-6">
+                    <label class="form-label small fw-bold text-secondary mb-1">Sede</label>
+                    <select name="sede" class="form-select form-select-sm" onchange="this.form.submit()">
+                        <option value="">Todas las sedes</option>
+                        {% for sede in sedes %}
+                            <option value="{{ sede.id }}" {% if filtros_actuales.sede == sede.id|stringformat:"i" %}selected{% endif %}>
+                                {{ sede.ciudad }}
+                            </option>
+                        {% endfor %}
+                    </select>
+                </div>
+                {% endif %}
+                
+                <div class="{% if not sede_actual %}col-md-3{% else %}col-md-4{% endif %} col-6">
+                    <label class="form-label small fw-bold text-secondary mb-1">Estado del Viaje</label>
+                    <select name="estado" class="form-select form-select-sm" onchange="this.form.submit()">
+                        <option value="">Todos los estados</option>
+                        {% for clave, valor in estados_disponibles %}
+                            <option value="{{ clave }}" {% if filtros_actuales.estado == clave %}selected{% endif %}>
+                                {{ valor }}
+                            </option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <div class="{% if not sede_actual %}col-md-3{% else %}col-md-4{% endif %} col-6">
+                    <label class="form-label small fw-bold text-secondary mb-1">Chofer</label>
+                    <select name="chofer" class="form-select form-select-sm" onchange="this.form.submit()">
+                        <option value="">Todos los choferes</option>
+                        {% for chofer in choferes %}
+                            <option value="{{ chofer.id }}" {% if filtros_actuales.chofer == chofer.id|stringformat:"i" %}selected{% endif %}>
+                                {{ chofer.apellido }}, {{ chofer.nombre }}
+                            </option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <div class="{% if not sede_actual %}col-md-3{% else %}col-md-4{% endif %} col-6">
+                    <label class="form-label small fw-bold text-secondary mb-1">Camión</label>
+                    <select name="camion" class="form-select form-select-sm" onchange="this.form.submit()">
+                        <option value="">Todas las patentes</option>
+                        {% for camion in camiones %}
+                            <option value="{{ camion.id }}" {% if filtros_actuales.camion == camion.id|stringformat:"i" %}selected{% endif %}>
+                                {{ camion.patente }} - {{ camion.modelo }}
+                            </option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
+
+            <div class="row g-3 align-items-end">
+                <div class="col-md-3 col-6">
+                    <label class="form-label small fw-bold text-secondary mb-1">
+                        <i class="bi bi-calendar-event me-1"></i>Fecha de Salida
+                    </label>
+                    <input type="date" name="fecha_salida" class="form-control form-control-sm" 
+                           value="{{ filtros_actuales.fecha_salida|default:'' }}" onchange="this.form.submit()">
+                </div>
+
+                <div class="col-md-3 col-6">
+                    <label class="form-label small fw-bold text-secondary mb-1">Ciudad de Destino</label>
+                    <select name="destino" class="form-select form-select-sm" onchange="this.form.submit()">
+                        <option value="">Todos los destinos</option>
+                        {% for ciudad in ciudades_destino %}
+                            <option value="{{ ciudad }}" {% if filtros_actuales.destino == ciudad %}selected{% endif %}>
+                                {{ ciudad }}
+                            </option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <div class="col-md-3 col-12 text-end ms-auto">
+                    {% if filtros_actuales %}
+                        <a href="{% if sede_actual %}{% url 'sede_viaje_list' sede_actual.id %}{% else %}{% url 'viaje_list' %}{% endif %}" 
+                           class="btn btn-sm btn-outline-secondary w-100 d-flex align-items-center justify-content-center" 
+                           title="Restablecer toda la vista">
+                            <i class="bi bi-x-circle me-1"></i>Limpiar todo
+                        </a>
+                    {% endif %}
+                </div>
+            </div>
+
+        </form>
+    </div>
+</div>
+
+<div class="card shadow-sm border-0 rounded-3">
+    <div class="card-body p-0">
+        <div class="table-responsive">
+            <table class="table table-hover align-middle mb-0">
+                <thead class="table-dark">
+                    <tr>
+                        <th class="ps-3" style="width: 50px;">#</th>
+                        <th>
+                        {% if sede_actual %}
+                            Destino
                         {% else %}
-                            <span class="text-muted">Sin asignar</span>
+                            <div class="d-flex align-items-center">
+                                <span class="text-end me-2" style="min-width: 85px;">Origen</span>
+                                <i class="bi bi-arrow-right me-2"></i>
+                                <span>Destino</span>
+                            </div>
                         {% endif %}
-                    </td>
-                    <td>
-                        {% if viaje.camion %}
-                            {{ viaje.camion.patente }}
+                    </th>
+                        <th>Fecha de Salida</th>
+                        <th>Fecha de Llegada</th>
+                        <th>Carga</th>
+                        <th>Estado</th>
+                        <th>Chofer</th>
+                        <th>Camión</th>
+                        <th class="text-end pe-3" style="min-width: 200px;">Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for viaje in viajes %}
+                    <tr>
+                        <td class="ps-3 fw-bold text-secondary">{{ forloop.counter }}</td>
+                        <td>
+                        {% if sede_actual %}
+                            <strong class="text-dark fs-6">{{ viaje.ciudad_destino }}</strong> 
+                            <small class="text-muted d-block">{{ viaje.provincia_destino }}</small>
                         {% else %}
-                            <span class="text-muted">Sin asignar</span>
+                            <div class="d-flex align-items-center">
+                                <span class="fw-medium text-secondary text-end me-2" style="min-width: 85px;">
+                                    {{ viaje.ciudad_origen }}
+                                </span>
+                                <i class="bi bi-arrow-right text-muted me-2"></i>
+                                <strong class="text-dark">{{ viaje.ciudad_destino }}</strong>
+                            </div>
                         {% endif %}
-                    </td>
-                    <td>
-                        <div class="btn-group" role="group">
-                            <a href="{% url 'viaje_detail' viaje.pk %}" class="btn btn-sm btn-outline-info">Ver</a>
-                            {% if viaje.estado == 'pendiente' or viaje.estado == 'en_curso' %}
-                                <a href="{% url 'viaje_update' viaje.pk %}" class="btn btn-sm btn-outline-warning">Editar</a>
+                    </td>   
+                        <td class="text-muted">{{ viaje.fecha_salida }}</td>
+                        <td class="text-muted">{{ viaje.fecha_llegada }}</td>
+                        <td class="fw-medium">{{ viaje.carga }}</td>
+                        <td>
+                            <span class="badge {{ viaje.color_estado }} px-2 py-1">
+                                {{ viaje.get_estado_display }}
+                            </span>
+                        </td>
+                        <td>
+                            {% if viaje.chofer %}
+                                <span class="d-flex align-items-center">
+                                    <i class="bi bi-person-fill text-muted me-1"></i>
+                                    <span><strong>{{ viaje.chofer.apellido }}</strong>, {{ viaje.chofer.nombre }}</span>
+                                </span>
+                            {% else %}
+                                <span class="text-muted fst-italic">Sin asignar</span>
                             {% endif %}
-                            <a href="{% url 'viaje_delete' viaje.pk %}" class="btn btn-sm btn-outline-danger">Eliminar</a>
-                        </div>
-                    </td>
-                </tr>
-                {% empty %}
-                <tr>
-                    <td colspan="8" class="text-center">No hay viajes registrados aún.</td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
+                        </td>
+                        <td>
+                            {% if viaje.camion %}
+                                <span class="badge bg-light text-dark border font-monospace px-2 py-1 fs-6">
+                                    <i class="bi bi-truck text-muted me-1"></i>{{ viaje.camion.patente }}
+                                </span>
+                            {% else %}
+                                <span class="text-muted fst-italic">Sin asignar</span>
+                            {% endif %}
+                        </td>
+                        <td class="text-end pe-3">
+                            <div class="btn-group shadow-sm" role="group">
+                                {% if sede_actual %}
+                                    <a href="{% url 'sede_viaje_detail' sede_actual.pk viaje.pk %}" class="btn btn-sm btn-outline-secondary" title="Ver detalle">Ver</a>
+                                {% else %}
+                                    <a href="{% url 'viaje_detail' viaje.pk %}" class="btn btn-sm btn-outline-secondary" title="Ver detalle">Ver</a>
+                                {% endif %}
+                                {% if viaje.estado == 'pendiente' or viaje.estado == 'en_curso' %}
+                                    {% if sede_actual %}
+                                        <a href="{% url 'sede_viaje_update' sede_actual.pk viaje.pk %}" class="btn btn-sm btn-outline-primary" title="Editar viaje">Editar</a>
+                                    {% else %}
+                                        <a href="{% url 'viaje_update' viaje.pk %}" class="btn btn-sm btn-outline-primary" title="Editar viaje">Editar</a>
+                                    {% endif %}
+                                {% endif %}
+                                <a href="{% url 'viaje_delete' viaje.pk %}" class="btn btn-sm btn-outline-danger" title="Eliminar viaje">Eliminar</a>
+                            </div>
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="9" class="text-center py-5 text-muted">
+                            <p class="mb-1 fs-5">No hay viajes registrados aún.</p>
+                            <small>Hacé clic en "+ Nuevo Viaje" para empezar a diagramar los recorridos.</small>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
     </div>
 </div>
 {% endblock %}

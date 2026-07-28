@@ -7,7 +7,7 @@
     <div class="col-md-8">
         <nav aria-label="breadcrumb">
             <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="{% url 'chofer_list' %}">Gestión de Personal</a></li>
+                <li class="breadcrumb-item"><a href="{{ cancel_url }}">Personal</a></li>
                 <li class="breadcrumb-item active">Detalle: {{ chofer.nombre }} {{ chofer.apellido }}</li>
             </ol>
         </nav>
@@ -36,19 +36,37 @@
                     <div class="col-sm-4 fw-bold">Camión:</div>
                     <div class="col-sm-8">
                         {% if chofer.camion.first %}
-                            <a href="{% url 'camion_detail' chofer.camion.first.id %}" class="text-decoration-none">
+                            {% if sede_actual %}
+                                <a href="{% url 'sede_camion_detail' sede_actual.pk chofer.camion.first.pk %}" class="text-decoration-none">
                                 {{ chofer.camion.first }}
+                                </a>
+                            {% else %}
+                                <a href="{% url 'camion_detail' chofer.camion.first.pk %}" class="text-decoration-none">
+                                {{ chofer.camion.first }}
+                                </a>
+                            {% endif %}
+                        {% else %}
+                            <span class="text-muted">Sin asignar</span>
+                        {% endif %}
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <div class="col-sm-4 fw-bold">Sede:</div>
+                    <div class="col-sm-8">
+                        {% if chofer.sede %}
+                            <a href="{% url 'sede_detail' chofer.sede.id %}" class="text-decoration-none">
+                                {{ chofer.sede.ciudad }}
                             </a>
                         {% else %}
                             <span class="text-muted">Sin asignar</span>
                         {% endif %}
                     </div>
-                </div>             
+                </div>
             </div>
             
             <div class="card-footer bg-light text-end">
-                <a href="{% url 'chofer_list' %}" class="btn btn-secondary">Volver al listado</a>
-                <a href="{% url 'chofer_update' chofer.pk %}" class="btn btn-warning">Editar Datos</a>
+                <a href="{{ cancel_url }}" class="btn btn-secondary">Volver</a>
+                <a href="{{ edit_url }}" class="btn btn-warning">Editar Datos</a>
             </div>
         </div>
     </div>

@@ -28,4 +28,25 @@
         </div>
     </div>
 </div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const selectCiudad = document.getElementById("id_ciudad_origen");
+        const inputProvincia = document.getElementById("id_provincia_origen");
+
+        if (selectCiudad && selectCiudad.tagName === "SELECT") {
+            selectCiudad.addEventListener("change", function() {
+                const ciudadElegida = this.value;
+                const mapaProvincias = JSON.parse(this.getAttribute("data-provincias") || "{}");
+                
+                if (ciudadElegida && mapaProvincias[ciudadElegida]) {
+                    inputProvincia.value = mapaProvincias[ciudadElegida];
+                } else {
+                    inputProvincia.value = "";
+                }
+            });
+        }
+    });
+</script>
+
 {% endblock %}

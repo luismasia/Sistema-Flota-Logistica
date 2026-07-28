@@ -4,54 +4,182 @@
 
 {% block contenido %}
 <div class="d-flex justify-content-between align-items-center mb-4">
-    <h2>Gestión de Personal</h2>
-    <a href="{% url 'chofer_create' %}" class="btn btn-primary">+ Nuevo Chofer</a>
+    <h2 class="mb-0 fw-bold">
+        <i class="bi bi-people me-2"></i>Gestión de Personal
+        {% if sede_actual %}
+            <span class="text-muted fs-4">| Sede {{ sede_actual.ciudad }}</span>
+        {% endif %}
+    </h2>
+    <div>
+        {% if sede_actual %}
+            <a href="{% url 'sede_detail' sede_actual.pk %}" class="btn btn-outline-secondary me-2">
+                &larr; Volver
+            </a>
+            <a href="{% url 'sede_chofer_create' sede_actual.pk %}" class="btn btn-primary shadow-sm">
+                + Nuevo Chofer
+            </a>
+        {% else %}
+            <a href="{% url 'inicio' %}" class="btn btn-outline-secondary me-2">
+                &larr; Volver
+            </a>
+            <a href="{% url 'chofer_create' %}" class="btn btn-primary shadow-sm">
+                + Nuevo Chofer
+            </a>
+        {% endif %}
+    </div>
+</div>
+<div class="card shadow-sm border-0 rounded-3 mb-4 bg-light">
+    <div class="card-body py-3">
+        <form method="get">
+            <div class="row g-2 align-items-center mb-3 pb-3 border-bottom">
+                <div class="col-md-10 col-12">
+                    <div class="input-group input-group-sm">
+                        <span class="input-group-text bg-white border-end-0 text-muted">
+                            <i class="bi bi-search"></i>
+                        </span>
+                        <input type="text" name="busqueda" class="form-control border-start-0 ps-0" 
+                               placeholder="Buscar" 
+                               value="{{ filtros_actuales.busqueda|default:'' }}">
+                    </div>
+                </div>
+                <div class="col-md-2 col-12 d-flex">
+                    <button type="submit" class="btn btn-sm btn-primary flex-grow-1 fw-medium shadow-sm">
+                        Buscar
+                    </button>
+                </div>
+            </div>
+            <div class="row g-3 align-items-end">
+                {% if not sede_actual %}
+                <div class="col-md-3 col-12">
+                    <label class="form-label small fw-bold text-secondary mb-1">Sede</label>
+                    <select name="sede" class="form-select form-select-sm" onchange="this.form.submit()">
+                        <option value="">Todas las sedes</option>
+                        {% for sede in sedes %}
+                            <option value="{{ sede.id }}" {% if filtros_actuales.sede == sede.id|stringformat:"i" %}selected{% endif %}>
+                                {{ sede.ciudad }}
+                            </option>
+                        {% endfor %}
+                    </select>
+                </div>
+                {% endif %}
+                <div class="{% if not sede_actual %}col-md-3{% else %}col-md-4{% endif %} col-6">
+                    <label class="form-label small fw-bold text-secondary mb-1">Estado</label>
+                    <select name="estado" class="form-select form-select-sm" onchange="this.form.submit()">
+                        <option value="">Todos los estados</option>
+                        {% for clave, valor in estados_disponibles %}
+                            <option value="{{ clave }}" {% if filtros_actuales.estado == clave %}selected{% endif %}>
+                                {{ valor }}
+                            </option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="{% if not sede_actual %}col-md-3{% else %}col-md-4{% endif %} col-6">
+                    <label class="form-label small fw-bold text-secondary mb-1">Año de Ingreso</label>
+                    <select name="año" class="form-select form-select-sm" onchange="this.form.submit()">
+                        <option value="">Todos los años</option>
+                        {% for anio in años_disponibles %}
+                            <option value="{{ anio }}" {% if filtros_actuales.año == anio|stringformat:"i" %}selected{% endif %}>
+                                {{ anio }}
+                            </option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="{% if not sede_actual %}col-md-3{% else %}col-md-4{% endif %} col-12 text-end ms-auto">
+                    {% if filtros_actuales %}
+                        <a href="{% if sede_actual %}{% url 'sede_chofer_list' sede_actual.id %}{% else %}{% url 'chofer_list' %}{% endif %}" 
+                           class="btn btn-sm btn-outline-secondary w-100 d-flex align-items-center justify-content-center" 
+                           title="Restablecer toda la vista">
+                            <i class="bi bi-x-circle me-1"></i>Limpiar todo
+                        </a>
+                    {% endif %}
+                </div>
+            </div>
+        </form>
+    </div>
 </div>
 
-<div class="card shadow">
-    <div class="card-body">
-        <table class="table table-hover">
-            <thead class="table-dark">
-                <tr>
-                    <th>Nombre</th>
-                    <th>Fecha de ingreso</th>
-                    <th>Estado</th>
-                    <th>Camión</th>                    
-                    <th>Acciones</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for chofer in choferes %}
-                <tr>
-                    <td><strong>{{ chofer.apellido }}, </strong> <strong>{{ chofer.nombre }}</strong></td>
-                    <td>{{ chofer.fecha_ingreso }}</td>
-                    <td>
-                        <span class="badge {{ chofer.color_estado }}">
-                            {{ chofer.get_estado_display }}
-                        </span>
-                    </td>
-                    <td>
-                        {% if chofer.camion.first %}
-                            {{ chofer.camion.first }}
-                        {% else %}
-                            <span class="text-muted">Sin asignar</span>
-                        {% endif %}
-                    </td>                    
-                    <td>
-                        <div class="btn-group" role="group">
-                            <a href="{% url 'chofer_detail' chofer.pk %}" class="btn btn-sm btn-outline-info">Ver</a>
-                            <a href="{% url 'chofer_update' chofer.pk %}" class="btn btn-sm btn-outline-warning">Editar</a>
-                            <a href="{% url 'chofer_delete' chofer.pk %}" class="btn btn-sm btn-outline-danger">Eliminar</a>
-                        </div>
-                    </td>
-                </tr>
-                {% empty %}
-                <tr>
-                    <td colspan="5" class="text-center">No hay choferes registrados aún.</td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
+<div class="card shadow-sm border-0 rounded-3">
+    <div class="card-body p-0">
+        <div class="table-responsive">
+            <table class="table table-hover align-middle mb-0">
+                <thead class="table-dark">
+                    <tr>
+                        <th class="ps-3" style="width: 50px;">#</th>
+                        <th>Nombre</th>
+                        <th>Fecha de ingreso</th>
+                        <th>Estado</th>
+                        <th>Camión</th>
+                        {% if not sede_actual %}
+                            <th>Sede</th>
+                        {% endif %}                 
+                        <th class="text-end pe-3" style="min-width: 240px;">Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for chofer in choferes %}
+                    <tr>
+                        <td class="ps-3 fw-bold text-secondary">{{ forloop.counter }}</td>
+                        
+                        <td>
+                            <strong class="text-dark">{{ chofer.apellido }}</strong>, {{ chofer.nombre }}
+                        </td>
+                        
+                        <td class="text-muted">{{ chofer.fecha_ingreso }}</td>
+                        
+                        <td>
+                            <span class="badge {{ chofer.color_estado }} px-2 py-1">
+                                {{ chofer.get_estado_display }}
+                            </span>
+                        </td>
+                        
+                        <td>
+                            {% if chofer.camion.first %}
+                                <span class="badge bg-light text-dark border font-monospace px-2 py-1 fs-6">
+                                    <i class="bi bi-truck text-muted me-1"></i>{{ chofer.camion.first }}
+                                </span>
+                            {% else %}
+                                <span class="text-muted fst-italic">Sin asignar</span>
+                            {% endif %}
+                        </td>
+                        
+                        {% if not sede_actual %}
+                            <td>
+                                {% if chofer.sede %}
+                                    <span class="badge bg-secondary-subtle text-secondary border">
+                                        {{ chofer.sede.ciudad }}
+                                    </span>
+                                {% else %}
+                                    <span class="text-muted fst-italic">Sin asignar</span>
+                                {% endif %}
+                            </td>
+                        {% endif %}                  
+                        
+                        <td class="text-end pe-3">
+                            <div class="btn-group shadow-sm" role="group">
+                                {% if sede_actual %}
+                                    <a href="{% url 'sede_chofer_detail' sede_actual.pk chofer.pk %}" class="btn btn-sm btn-outline-secondary" title="Ver detalle">Ver</a>
+                                    <a href="{% url 'sede_chofer_update' sede_actual.pk chofer.pk %}" class="btn btn-sm btn-outline-primary" title="Editar chofer">Editar</a>
+                                    <a href="{% url 'sede_chofer_trasladar' sede_actual.pk chofer.pk %}" class="btn btn-sm btn-outline-dark {% if chofer.estado == 'en_viaje' %}disabled{% endif %}" title="Trasladar de sede">Trasladar</a>
+                                {% else %}
+                                    <a href="{% url 'chofer_detail' chofer.pk %}" class="btn btn-sm btn-outline-secondary" title="Ver detalle">Ver</a>
+                                    <a href="{% url 'chofer_update' chofer.pk %}" class="btn btn-sm btn-outline-primary" title="Editar chofer">Editar</a>
+                                    <a href="{% url 'chofer_trasladar' chofer.pk %}" class="btn btn-sm btn-outline-dark {% if chofer.estado == 'en_viaje' %}disabled{% endif %}" title="Trasladar de sede">Trasladar</a>
+                                {% endif %}
+                                <a href="{% url 'chofer_delete' chofer.pk %}" class="btn btn-sm btn-outline-danger" title="Eliminar chofer">Eliminar</a>
+                            </div>
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="8" class="text-center py-5 text-muted">
+                            <p class="mb-1 fs-5">No hay choferes registrados aún.</p>
+                            <small>Hacé clic en "+ Nuevo Chofer" para empezar a cargar el personal.</small>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
     </div>
 </div>
 {% endblock %}
