@@ -4,59 +4,70 @@ from django.shortcuts import redirect, get_object_or_404, render
 from django.contrib import messages
 from .models import Empresa, Camion, Chofer, Viaje, Sede
 from .forms import EmpresaForm, CamionForm, ChoferForm, ViajeForm, SedeForm
-from datetime import date
 from django.db.models import Q, Case, When, Value, IntegerField, Value as V
 from django.db.models.functions import Concat
 from django import forms
+from django.utils import timezone
+from datetime import datetime
+from django.http import JsonResponse
 
 def actualizar_estados_flota(sede=None):  
-    hoy = date.today()
+    ahora = timezone.now()
     filtro_sede = Q(sede=sede) if sede else Q()
 
-    viajes_a_iniciar = Viaje.objects.filter(
-        filtro_sede,
-        estado='pendiente',
-        fecha_salida__lte=hoy,
-        chofer__isnull=False
-    )
+    viajes_pendientes = Viaje.objects.filter(filtro_sede, estado='pendiente', chofer__isnull=False)
 
-    for viaje in viajes_a_iniciar:
-        viaje.estado = 'en_curso'
-        if not viaje.camion and viaje.chofer.camion.first():
-            viaje.camion = viaje.chofer.camion.first()
-        if viaje.chofer:
+    for viaje in viajes_pendientes:
+        salida = timezone.make_aware(datetime.combine(viaje.fecha_salida, viaje.hora_salida))
+        
+        if ahora >= salida:
+            viaje.estado = 'en_curso'
+            
+            if not viaje.camion and viaje.chofer.camion.first():
+                viaje.camion = viaje.chofer.camion.first()
+
             viaje.chofer.estado = 'en_viaje'
             viaje.chofer.save()
-        viaje.save()
+            viaje.save()
 
-    viajes_vencidos = Viaje.objects.filter(
-        filtro_sede,
-        estado='pendiente',
-        fecha_salida__lt=hoy,
-        chofer__isnull=True
-    )
+    viajes_sin_chofer = Viaje.objects.filter(filtro_sede, estado='pendiente', chofer__isnull=True)
 
-    for viaje in viajes_vencidos:
-        viaje.estado = 'vencido'
-        if viaje.chofer:
-            viaje.chofer.estado = 'disponible'
-            viaje.chofer.save()
-        viaje.chofer = None
-        viaje.camion = None
-        viaje.save()
+    for viaje in viajes_sin_chofer:
+        salida = timezone.make_aware(datetime.combine(viaje.fecha_salida, viaje.hora_salida))
+        
+        if ahora > salida:
+            viaje.estado = 'vencido'
+            viaje.camion = None
+            viaje.save()
 
-    viajes_a_completar = Viaje.objects.filter(
-        filtro_sede,
-        estado='en_curso',
-        fecha_llegada__lt=hoy
-    )
+    viajes_en_curso = Viaje.objects.filter(filtro_sede, estado='en_curso')
 
-    for viaje in viajes_a_completar:
-        viaje.estado = 'completado'
-        if viaje.chofer:
-            viaje.chofer.estado = 'disponible'
-            viaje.chofer.save()
-        viaje.save()
+    for viaje in viajes_en_curso:
+        llegada = timezone.make_aware(datetime.combine(viaje.fecha_llegada, viaje.hora_llegada))
+        
+        if ahora >= llegada:
+            viaje.estado = 'completado'
+            if viaje.chofer:
+                viaje.chofer.estado = 'disponible'
+                viaje.chofer.save()
+            viaje.save()
+
+def cargar_choferes_por_ciudad(request):
+    ciudad = request.GET.get('ciudad', '').strip()
+    sede = Sede.objects.filter(ciudad__iexact=ciudad).first()
+    
+    if sede:
+        choferes = Chofer.objects.filter(
+            sede=sede, 
+            estado='disponible', 
+            camion__isnull=False
+        ).distinct().order_by('apellido', 'nombre')
+        
+        data = [{'id': c.id, 'texto': f"{c.apellido}, {c.nombre}"} for c in choferes]
+    else:
+        data = []
+        
+    return JsonResponse({'choferes': data})
 
 class FiltrosFlotaMixin:
     def aplicar_filtros_comunes(self, queryset):
@@ -301,9 +312,9 @@ class ChoferListView(FiltrosFlotaMixin, ListView):
 
         return queryset.annotate(
             prioridad_estado=Case(
-                When(estado='disponible', then=Value(1)),
-                When(estado='inactivo', then=Value(2)),
-                When(estado='en_viaje', then=Value(3)),
+                When(estado='en_viaje', then=Value(1)),
+                When(estado='disponible', then=Value(2)),
+                When(estado='inactivo', then=Value(3)),
                 default=Value(4),
                 output_field=IntegerField(),
             )
@@ -468,7 +479,7 @@ class ViajeListView(FiltrosFlotaMixin, ListView):
                 default=Value(7),
                 output_field=IntegerField(),
             )
-        ).order_by('prioridad_estado', 'fecha_salida', 'fecha_llegada', 'ciudad_origen')
+        ).order_by('prioridad_estado', '-fecha_llegada', '-hora_llegada', 'ciudad_origen')
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -501,21 +512,6 @@ class ViajeCreateView(CreateView):
     template_name = 'form_generico.html'
     success_url = reverse_lazy('viaje_list')
 
-    def form_valid(self, form):
-        sede_id = self.kwargs.get('sede_id')
-        if sede_id:
-            sede_actual = get_object_or_404(Sede, pk=sede_id)
-            form.instance.sede = sede_actual
-            form.instance.ciudad_origen = sede_actual.ciudad
-            form.instance.provincia_origen = sede_actual.provincia
-        else:
-            ciudad_elegida = form.cleaned_data.get('ciudad_origen')
-            if ciudad_elegida:
-                sede_encontrada = Sede.objects.filter(ciudad=ciudad_elegida).first()
-                if sede_encontrada:
-                    form.instance.sede = sede_encontrada
-        return super().form_valid(form)
-
     def get_success_url(self):
         sede_id = self.kwargs.get('sede_id')
         if sede_id:
@@ -535,11 +531,28 @@ class ViajeCreateView(CreateView):
     def get_form_kwargs(self):
         kwargs = super().get_form_kwargs()
         sede_id = self.kwargs.get('sede_id')
+        
         if sede_id:
             kwargs['sede_contexto'] = get_object_or_404(Sede, pk=sede_id)
+            
         elif self.object and self.object.sede:
             kwargs['sede_contexto'] = self.object.sede
         return kwargs
+
+    def form_valid(self, form):
+            sede_id = self.kwargs.get('sede_id')
+            if sede_id:
+                sede_actual = get_object_or_404(Sede, pk=sede_id)
+                form.instance.sede = sede_actual
+                form.instance.ciudad_origen = sede_actual.ciudad
+                form.instance.provincia_origen = sede_actual.provincia
+            else:
+                ciudad_elegida = form.cleaned_data.get('ciudad_origen')
+                if ciudad_elegida:
+                    sede_encontrada = Sede.objects.filter(ciudad__iexact=ciudad_elegida).first()
+                    if sede_encontrada:
+                        form.instance.sede = sede_encontrada
+            return super().form_valid(form)
 
 class ViajeUpdateView(UpdateView):
     model = Viaje

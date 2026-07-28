@@ -1,5 +1,6 @@
 from django.db import models
-from datetime import date
+from datetime import datetime, time
+from django.utils import timezone
 
 class Empresa(models.Model):
     nombre = models.CharField(max_length=100, default='Mi Empresa')
@@ -63,6 +64,12 @@ class Chofer(models.Model):
             viaje_afectado.save()
 
         super().delete(*args, **kwargs)
+
+    @property
+    def viaje_actual(self):
+        return self.viaje.filter(
+            estado__in=['pendiente', 'en_curso']
+        ).first()
     
     @property
     def color_estado(self):
@@ -118,6 +125,12 @@ class Camion(models.Model):
             viaje_afectado.save()
             
         super().delete(*args, **kwargs)
+
+    @property
+    def viaje_actual(self):
+        return self.viaje.filter(
+            estado__in=['pendiente', 'en_curso']
+        ).first()
     
     @property
     def color_estado(self):
@@ -145,7 +158,9 @@ class Viaje(models.Model):
     kilometros = models.IntegerField()
     combustible_estimado = models.IntegerField(null=True, blank=True)    
     fecha_salida = models.DateField()
+    hora_salida = models.TimeField(default=time(8, 0))
     fecha_llegada = models.DateField()
+    hora_llegada = models.TimeField(default=time(18, 0))
     chofer = models.ForeignKey(Chofer, on_delete=models.SET_NULL, null=True, blank=True, related_name='viaje')
     camion = models.ForeignKey(Camion, on_delete=models.SET_NULL, null=True, blank=True, related_name='viaje')
     carga = models.CharField(max_length=100)
@@ -162,6 +177,10 @@ class Viaje(models.Model):
         return f'Viaje {self.id}: {self.ciudad_origen} -> {self.ciudad_destino}'
     
     def save(self, *args, **kwargs):
+        ahora = timezone.now()
+        salida = timezone.make_aware(datetime.combine(self.fecha_salida, self.hora_salida))
+        llegada = timezone.make_aware(datetime.combine(self.fecha_llegada, self.hora_llegada))
+
         if self.pk:
             viaje_viejo = Viaje.objects.get(pk=self.pk)
 
@@ -183,8 +202,8 @@ class Viaje(models.Model):
                 self.camion = self.chofer.camion.first()
             else:
                 self.camion = None
-                
-            if date.today() >= self.fecha_salida and self.chofer:
+
+            if ahora >= salida and self.chofer:
                 self.estado = 'en_curso'
                  
         if self.camion:
@@ -192,7 +211,7 @@ class Viaje(models.Model):
             self.camion.daños = self.daños
             self.camion.save()
         
-        if self.estado == 'en_curso' and date.today() > self.fecha_llegada:
+        if self.estado == 'en_curso' and ahora > llegada:
             self.estado = 'completado'
         
         if self.estado == 'en_curso' and self.daños:
@@ -205,14 +224,13 @@ class Viaje(models.Model):
             self.chofer = None
             self.camion = None
         
-        if self.fecha_salida < date.today():
-            if self.estado == 'pendiente':
-                self.estado = 'vencido'
-                if self.chofer:
-                    self.chofer.estado = 'disponible'
-                    self.chofer.save()
-                self.chofer = None
-                self.camion = None
+        if ahora > salida and self.estado == 'pendiente':
+            self.estado = 'vencido'
+            if self.chofer:
+                self.chofer.estado = 'disponible'
+                self.chofer.save()
+            self.chofer = None
+            self.camion = None
         
         if self.chofer:
             if self.estado == 'en_curso':
@@ -221,6 +239,12 @@ class Viaje(models.Model):
             elif self.estado in ['completado', 'incidente']:
                 self.chofer.estado = 'disponible'
                 self.chofer.save()
+
+        if self.chofer:
+            Viaje.objects.filter(
+                chofer=self.chofer, 
+                estado='pendiente'
+            ).exclude(pk=self.pk).update(chofer=None, camion=None)
             
         super().save(*args, **kwargs)
     

@@ -102,7 +102,7 @@ class ViajeForm(forms.ModelForm):
         model = Viaje
         fields = [
             'ciudad_origen', 'provincia_origen', 'ciudad_destino', 'provincia_destino', 'kilometros', 'combustible_estimado', 
-            'fecha_salida', 'fecha_llegada', 'chofer', 'carga', 'estado', 'daños', 'multas'
+            'fecha_salida', 'hora_salida', 'fecha_llegada', 'hora_llegada', 'chofer', 'carga', 'estado', 'daños', 'multas'
         ]
         
         widgets = {
@@ -113,7 +113,9 @@ class ViajeForm(forms.ModelForm):
             'kilometros': forms.NumberInput(attrs={'class': 'form-control'}),
             'combustible_estimado': forms.NumberInput(attrs={'class': 'form-control'}),
             'fecha_salida': forms.DateInput(format='%Y-%m-%d', attrs={'class': 'form-control', 'type': 'date'}),
+            'hora_salida': forms.TimeInput(format='%H:%M', attrs={'class': 'form-control', 'type': 'time'}),
             'fecha_llegada': forms.DateInput(format='%Y-%m-%d', attrs={'class': 'form-control', 'type': 'date'}),
+            'hora_llegada': forms.TimeInput(format='%H:%M', attrs={'class': 'form-control', 'type': 'time'}),
             'chofer': forms.Select(attrs={'class': 'form-select'}),
             'carga': forms.TextInput(attrs={'class': 'form-control'}),
             'estado': forms.Select(attrs={'class': 'form-select'}),
@@ -188,6 +190,20 @@ class ViajeForm(forms.ModelForm):
         else:
             self.fields['daños'].disabled = True
             self.fields['multas'].disabled = True
+
+    def clean(self):
+        cleaned_data = super().clean()
+        ciudad_origen = cleaned_data.get('ciudad_origen')
+        chofer = cleaned_data.get('chofer')
+
+        if ciudad_origen and chofer:
+            sede_origen = Sede.objects.filter(ciudad__iexact=ciudad_origen.strip()).first()
+            if sede_origen and chofer.sede != sede_origen:
+                self.add_error(
+                    'chofer', 
+                    f"El chofer {chofer} pertenece a la sede de {chofer.sede.ciudad}, no puede tomar un viaje de la sede {sede_origen.ciudad}."
+                )
+        return cleaned_data
 
 class SedeForm(forms.ModelForm):
     class Meta:

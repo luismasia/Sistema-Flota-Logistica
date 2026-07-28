@@ -41,4 +41,5 @@ urlpatterns = [
     path('sedes/<int:sede_id>/choferes/<int:pk>/trasladar/', views.ChoferTrasladoView.as_view(), name='sede_chofer_trasladar'),
     path('camiones/mantenimiento/', views.MantenimientoView.as_view(), name='mantenimiento'),
     path('sedes/<int:sede_id>/camiones/mantenimiento/', views.MantenimientoView.as_view(), name='sede_mantenimiento'),
+    path('ajax/choferes-por-ciudad/', views.cargar_choferes_por_ciudad, name='ajax_choferes_ciudad'),
 ]

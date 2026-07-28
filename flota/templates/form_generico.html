@@ -49,4 +49,37 @@
     });
 </script>
 
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+    const inputCiudad = document.querySelector('[name="ciudad_origen"]');
+    const selectChofer = document.querySelector('[name="chofer"]');
+
+    if (inputCiudad && selectChofer) {
+        function actualizarChoferes() {
+            const ciudad = inputCiudad.value.trim();
+            if (!ciudad) return;
+
+            fetch(`{% url 'ajax_choferes_ciudad' %}?ciudad=${encodeURIComponent(ciudad)}`)
+                .then(response => response.json())
+                .then(data => {
+                    selectChofer.innerHTML = '<option value="">---------</option>';
+                    
+                    if (data.choferes.length > 0) {
+                        data.choferes.forEach(chofer => {
+                            const option = document.createElement('option');
+                            option.value = chofer.id;
+                            option.textContent = chofer.texto;
+                            selectChofer.appendChild(option);
+                        });
+                    } else {
+                        selectChofer.innerHTML = '<option value="">No hay choferes disponibles en esta ciudad</option>';
+                    }
+                })
+                .catch(error => console.error('Error AJAX al cargar choferes:', error));
+        }
+        inputCiudad.addEventListener('change', actualizarChoferes);
+    }
+});
+</script>
+
 {% endblock %}

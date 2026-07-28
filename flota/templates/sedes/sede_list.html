@@ -15,10 +15,10 @@
         {% for sede in sedes %}
         <div class="col-md-3 mb-4">
             <a href="{% url 'sede_detail' sede.pk %}" class="text-decoration-none">
-                <div class="card text-center border-danger h-100 shadow-sm">
+                <div class="card text-center border-success h-100 shadow-sm">
                     <div class="card-body d-flex flex-column justify-content-center">
-                        <p class="text-danger mb-1"><small>Sede</small></p>
-                        <h5 class="card-title text-danger mb-0">{{ sede.ciudad }}</h5>
+                        <p class="text-success mb-1"><small>Sede</small></p>
+                        <h5 class="card-title text-success mb-0">{{ sede.ciudad }}</h5>
                     </div>
                 </div>
             </a>
