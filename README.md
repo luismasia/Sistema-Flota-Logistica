@@ -21,30 +21,29 @@ Plataforma web Full Stack desarrollada para la administración integral de vehí
 
 Siga estos pasos para correr el proyecto en tu entorno local:
 
-1. **Clonar el repositorio:**
-   
-   git clone [https://github.com/luismasia/Sistema-Flota-Logistica.git](https://github.com/luismasia/Sistema-Flota-Logistica.git)
+1. **Clonar el repositorio:**\
+   git clone [https://github.com/luismasia/Sistema-Flota-Logistica.git](https://github.com/luismasia/Sistema-Flota-Logistica.git)\
    cd Sistema-Flota-Logistica
 
-2. **Crear y activar un entorno virtual:**
-   En Windows:
-   python -m venv venv
+2. **Crear y activar un entorno virtual:**\
+   En Windows:\
+   python -m venv venv\
    venv\Scripts\activate
 
-   En macOS/Linux:
-   python3 -m venv venv
+   En macOS/Linux:\
+   python3 -m venv venv\
    source venv/bin/activate
 
-3. **Instalar las dependencias:**
+3. **Instalar las dependencias:**\
    pip install -r requirements.txt
 
-4. **Aplicar las migraciones a la base de datos:**
+4. **Aplicar las migraciones a la base de datos:**\
    python manage.py migrate
 
-5. **Crear un superusuario (opcional, para acceder al panel de admin):**
+5. **Crear un superusuario (opcional, para acceder al panel de admin):**\
    python manage.py createsuperuser
 
-6. **Ejecutar el servidor de desarrollo:**
+6. **Ejecutar el servidor de desarrollo:**\
    python manage.py runserver
 
 ## 💻 Autor
