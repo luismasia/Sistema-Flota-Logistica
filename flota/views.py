@@ -9,7 +9,10 @@ from django.db.models.functions import Concat
 from django import forms
 from django.utils import timezone
 from datetime import datetime
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponseForbidden
+from django.core.management import call_command
+from django.views.decorators.http import require_GET
+from decouple import config
 
 def actualizar_estados_flota(sede=None):  
     ahora = timezone.now()
@@ -68,6 +71,17 @@ def cargar_choferes_por_ciudad(request):
         data = []
         
     return JsonResponse({'choferes': data})
+
+@require_GET
+def reset_demo_view(request):
+    token = request.GET.get('token')
+    expected_token = config('RESET_DEMO_TOKEN')
+
+    if token != expected_token:
+        return HttpResponseForbidden("Token inválido.")
+
+    call_command('reset_demo')
+    return JsonResponse({'status': 'ok', 'message': 'Demo reseteada.'})
 
 class FiltrosFlotaMixin:
     def aplicar_filtros_comunes(self, queryset):

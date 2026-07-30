@@ -42,4 +42,5 @@ urlpatterns = [
     path('camiones/mantenimiento/', views.MantenimientoView.as_view(), name='mantenimiento'),
     path('sedes/<int:sede_id>/camiones/mantenimiento/', views.MantenimientoView.as_view(), name='sede_mantenimiento'),
     path('ajax/choferes-por-ciudad/', views.cargar_choferes_por_ciudad, name='ajax_choferes_ciudad'),
+    path('reset-demo/', views.reset_demo_view, name='reset_demo'),
 ]
