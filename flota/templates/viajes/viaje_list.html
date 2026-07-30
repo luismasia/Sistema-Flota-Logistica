@@ -151,14 +151,14 @@
                             Destino
                         {% else %}
                             <div class="d-flex align-items-center">
-                                <span class="text-end me-2" style="min-width: 85px;">Origen</span>
+                                <span class="text-end me-2 flex-shrink-0" style="width: 130px;">Origen</span>
                                 <i class="bi bi-arrow-right me-2"></i>
                                 <span>Destino</span>
                             </div>
                         {% endif %}
                     </th>
-                        <th>Fecha de Salida</th>
-                        <th>Fecha de Llegada</th>
+                        <th class="text-nowrap">Fecha de Salida</th>
+                        <th class="text-nowrap">Fecha de Llegada</th>
                         <th>Carga</th>
                         <th>Estado</th>
                         <th>Chofer</th>
@@ -170,20 +170,19 @@
                     {% for viaje in viajes %}
                     <tr>
                         <td class="ps-3 fw-bold text-secondary">{{ forloop.counter }}</td>
-                        <td>
-                        {% if sede_actual %}
-                            <strong class="text-dark fs-6">{{ viaje.ciudad_destino }}</strong> 
-                            <small class="text-muted d-block">{{ viaje.provincia_destino }}</small>
-                        {% else %}
-                            <div class="d-flex align-items-center">
-                                <span class="fw-medium text-secondary text-end me-2" style="min-width: 85px;">
-                                    {{ viaje.ciudad_origen }}
-                                </span>
-                                <i class="bi bi-arrow-right text-muted me-2"></i>
-                                <strong class="text-dark">{{ viaje.ciudad_destino }}</strong>
-                            </div>
-                        {% endif %}
-                    </td>   
+                        <td>{% if sede_actual %}
+                                <strong class="text-dark fs-6 text-nowrap">{{ viaje.ciudad_destino }}</strong> 
+                                <small class="text-muted d-block text-nowrap">{{ viaje.provincia_destino }}</small>
+                            {% else %}
+                                <div class="d-flex align-items-center">
+                                    <span class="fw-medium text-secondary text-end me-2 flex-shrink-0 text-nowrap" style="width: 130px;">
+                                        {{ viaje.ciudad_origen }}
+                                    </span>
+                                    <i class="bi bi-arrow-right text-muted me-2"></i>
+                                    <strong class="text-dark text-nowrap">{{ viaje.ciudad_destino }}</strong>
+                                </div>
+                            {% endif %}
+                            </td>
                         <td class="text-muted">{{ viaje.fecha_salida }}</td>
                         <td class="text-muted">{{ viaje.fecha_llegada }}</td>
                         <td class="fw-medium">{{ viaje.carga }}</td>

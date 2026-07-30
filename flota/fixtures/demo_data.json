@@ -1,0 +1,824 @@
+[
+{
+  "model": "flota.empresa",
+  "pk": 1,
+  "fields": {
+    "nombre": "Mi Empresa",
+    "direccion": null,
+    "telefono": null,
+    "email": null
+  }
+},
+{
+  "model": "flota.sede",
+  "pk": 1,
+  "fields": {
+    "ciudad": "CABA",
+    "provincia": "Buenos Aires"
+  }
+},
+{
+  "model": "flota.sede",
+  "pk": 2,
+  "fields": {
+    "ciudad": "Santa Fé",
+    "provincia": "Santa Fé"
+  }
+},
+{
+  "model": "flota.sede",
+  "pk": 3,
+  "fields": {
+    "ciudad": "La Plata",
+    "provincia": "Buenos Aires"
+  }
+},
+{
+  "model": "flota.sede",
+  "pk": 4,
+  "fields": {
+    "ciudad": "Rosario",
+    "provincia": "Santa Fé"
+  }
+},
+{
+  "model": "flota.sede",
+  "pk": 5,
+  "fields": {
+    "ciudad": "Mar del Plata",
+    "provincia": "Buenos Aires"
+  }
+},
+{
+  "model": "flota.chofer",
+  "pk": 3,
+  "fields": {
+    "nombre": "Julián",
+    "apellido": "Pérez",
+    "fecha_ingreso": "2022-11-25",
+    "estado": "disponible",
+    "sede": 2
+  }
+},
+{
+  "model": "flota.chofer",
+  "pk": 4,
+  "fields": {
+    "nombre": "Luis",
+    "apellido": "Masia",
+    "fecha_ingreso": "2020-11-25",
+    "estado": "disponible",
+    "sede": 5
+  }
+},
+{
+  "model": "flota.chofer",
+  "pk": 5,
+  "fields": {
+    "nombre": "Raúl",
+    "apellido": "Jiménez",
+    "fecha_ingreso": "2023-04-04",
+    "estado": "inactivo",
+    "sede": 5
+  }
+},
+{
+  "model": "flota.chofer",
+  "pk": 6,
+  "fields": {
+    "nombre": "Fabián",
+    "apellido": "Mercado",
+    "fecha_ingreso": "2026-07-16",
+    "estado": "inactivo",
+    "sede": 5
+  }
+},
+{
+  "model": "flota.chofer",
+  "pk": 7,
+  "fields": {
+    "nombre": "Javier",
+    "apellido": "Moreno",
+    "fecha_ingreso": "2026-07-16",
+    "estado": "disponible",
+    "sede": 2
+  }
+},
+{
+  "model": "flota.chofer",
+  "pk": 9,
+  "fields": {
+    "nombre": "Héctor",
+    "apellido": "Klose",
+    "fecha_ingreso": "2026-07-16",
+    "estado": "disponible",
+    "sede": 3
+  }
+},
+{
+  "model": "flota.chofer",
+  "pk": 10,
+  "fields": {
+    "nombre": "Eduardo",
+    "apellido": "Falcón",
+    "fecha_ingreso": "2026-07-21",
+    "estado": "disponible",
+    "sede": 1
+  }
+},
+{
+  "model": "flota.chofer",
+  "pk": 12,
+  "fields": {
+    "nombre": "Eusebio",
+    "apellido": "Morales",
+    "fecha_ingreso": "2026-07-22",
+    "estado": "disponible",
+    "sede": 1
+  }
+},
+{
+  "model": "flota.chofer",
+  "pk": 13,
+  "fields": {
+    "nombre": "Marco",
+    "apellido": "Rodrigues",
+    "fecha_ingreso": "2026-07-23",
+    "estado": "disponible",
+    "sede": 1
+  }
+},
+{
+  "model": "flota.chofer",
+  "pk": 17,
+  "fields": {
+    "nombre": "Carlos",
+    "apellido": "Claypole",
+    "fecha_ingreso": "2026-07-28",
+    "estado": "disponible",
+    "sede": 4
+  }
+},
+{
+  "model": "flota.camion",
+  "pk": 1,
+  "fields": {
+    "modelo": "Scania 113h",
+    "patente": "ABC-123",
+    "año": 1992,
+    "kilometraje": 546353,
+    "estado": "disponible",
+    "chofer": 3,
+    "daños": false,
+    "multas": false,
+    "sede": 2
+  }
+},
+{
+  "model": "flota.camion",
+  "pk": 2,
+  "fields": {
+    "modelo": "Mercedes Benz Actros",
+    "patente": "ETS 228",
+    "año": 2010,
+    "kilometraje": 320000,
+    "estado": "inactivo",
+    "chofer": null,
+    "daños": false,
+    "multas": false,
+    "sede": 5
+  }
+},
+{
+  "model": "flota.camion",
+  "pk": 3,
+  "fields": {
+    "modelo": "Mercedes Benz New Actros",
+    "patente": "EYT 342",
+    "año": 2012,
+    "kilometraje": 100000,
+    "estado": "disponible",
+    "chofer": 4,
+    "daños": false,
+    "multas": false,
+    "sede": 5
+  }
+},
+{
+  "model": "flota.camion",
+  "pk": 4,
+  "fields": {
+    "modelo": "Iveco Stralis",
+    "patente": "UJE 214",
+    "año": 2010,
+    "kilometraje": 700000,
+    "estado": "disponible",
+    "chofer": 7,
+    "daños": false,
+    "multas": false,
+    "sede": 2
+  }
+},
+{
+  "model": "flota.camion",
+  "pk": 6,
+  "fields": {
+    "modelo": "Volvo FH16",
+    "patente": "TGR 500",
+    "año": 2010,
+    "kilometraje": 320000,
+    "estado": "inactivo",
+    "chofer": null,
+    "daños": false,
+    "multas": false,
+    "sede": 3
+  }
+},
+{
+  "model": "flota.camion",
+  "pk": 7,
+  "fields": {
+    "modelo": "Scania R",
+    "patente": "ERF 232",
+    "año": 2015,
+    "kilometraje": 650000,
+    "estado": "inactivo",
+    "chofer": null,
+    "daños": false,
+    "multas": false,
+    "sede": 5
+  }
+},
+{
+  "model": "flota.camion",
+  "pk": 8,
+  "fields": {
+    "modelo": "Iveco Stralis",
+    "patente": "YOW 732",
+    "año": 2015,
+    "kilometraje": 110000,
+    "estado": "inactivo",
+    "chofer": null,
+    "daños": false,
+    "multas": false,
+    "sede": 2
+  }
+},
+{
+  "model": "flota.camion",
+  "pk": 10,
+  "fields": {
+    "modelo": "Scania S",
+    "patente": "HUC 547",
+    "año": 2017,
+    "kilometraje": 270000,
+    "estado": "disponible",
+    "chofer": 13,
+    "daños": false,
+    "multas": true,
+    "sede": 1
+  }
+},
+{
+  "model": "flota.camion",
+  "pk": 12,
+  "fields": {
+    "modelo": "Volvo FH12",
+    "patente": "IOW 234",
+    "año": 2012,
+    "kilometraje": 310000,
+    "estado": "dañado",
+    "chofer": null,
+    "daños": true,
+    "multas": false,
+    "sede": 1
+  }
+},
+{
+  "model": "flota.camion",
+  "pk": 14,
+  "fields": {
+    "modelo": "Renault Premium",
+    "patente": "ETH 254",
+    "año": 2011,
+    "kilometraje": 285000,
+    "estado": "disponible",
+    "chofer": 10,
+    "daños": false,
+    "multas": false,
+    "sede": 1
+  }
+},
+{
+  "model": "flota.camion",
+  "pk": 15,
+  "fields": {
+    "modelo": "Renault Premium",
+    "patente": "YTG 400",
+    "año": 2013,
+    "kilometraje": 180000,
+    "estado": "inactivo",
+    "chofer": null,
+    "daños": false,
+    "multas": false,
+    "sede": 1
+  }
+},
+{
+  "model": "flota.camion",
+  "pk": 17,
+  "fields": {
+    "modelo": "Renault Magnum",
+    "patente": "AEY 756",
+    "año": 2007,
+    "kilometraje": 109929,
+    "estado": "inactivo",
+    "chofer": null,
+    "daños": false,
+    "multas": false,
+    "sede": 3
+  }
+},
+{
+  "model": "flota.camion",
+  "pk": 18,
+  "fields": {
+    "modelo": "Renault T",
+    "patente": "FSR 173",
+    "año": 2017,
+    "kilometraje": 36500,
+    "estado": "dañado",
+    "chofer": null,
+    "daños": true,
+    "multas": true,
+    "sede": 3
+  }
+},
+{
+  "model": "flota.camion",
+  "pk": 21,
+  "fields": {
+    "modelo": "Iveco Tector",
+    "patente": "AYU 234",
+    "año": 2015,
+    "kilometraje": 120000,
+    "estado": "inactivo",
+    "chofer": null,
+    "daños": false,
+    "multas": false,
+    "sede": 4
+  }
+},
+{
+  "model": "flota.camion",
+  "pk": 22,
+  "fields": {
+    "modelo": "Ford Cargo",
+    "patente": "YRT 254",
+    "año": 2013,
+    "kilometraje": 70543,
+    "estado": "dañado",
+    "chofer": null,
+    "daños": true,
+    "multas": false,
+    "sede": 4
+  }
+},
+{
+  "model": "flota.viaje",
+  "pk": 13,
+  "fields": {
+    "ciudad_origen": "CABA",
+    "provincia_origen": "Buenos Aires",
+    "ciudad_destino": "Santa Fé",
+    "provincia_destino": "Santa Fé",
+    "kilometros": 468,
+    "combustible_estimado": 100,
+    "fecha_salida": "2026-07-23",
+    "hora_salida": "08:00:00",
+    "fecha_llegada": "2026-07-24",
+    "hora_llegada": "18:00:00",
+    "chofer": 12,
+    "camion": 12,
+    "carga": "Ropa",
+    "estado": "incidente",
+    "daños": true,
+    "multas": true,
+    "sede": 1
+  }
+},
+{
+  "model": "flota.viaje",
+  "pk": 15,
+  "fields": {
+    "ciudad_origen": "CABA",
+    "provincia_origen": "Buenos Aires",
+    "ciudad_destino": "Rosario",
+    "provincia_destino": "Santa Fé",
+    "kilometros": 390,
+    "combustible_estimado": 60,
+    "fecha_salida": "2026-07-24",
+    "hora_salida": "08:00:00",
+    "fecha_llegada": "2026-07-24",
+    "hora_llegada": "18:00:00",
+    "chofer": 13,
+    "camion": 10,
+    "carga": "Bebidas",
+    "estado": "completado",
+    "daños": false,
+    "multas": false,
+    "sede": 1
+  }
+},
+{
+  "model": "flota.viaje",
+  "pk": 16,
+  "fields": {
+    "ciudad_origen": "CABA",
+    "provincia_origen": "Buenos Aires",
+    "ciudad_destino": "Luján",
+    "provincia_destino": "Buenos Aires",
+    "kilometros": 100,
+    "combustible_estimado": 20,
+    "fecha_salida": "2026-07-23",
+    "hora_salida": "08:00:00",
+    "fecha_llegada": "2026-07-23",
+    "hora_llegada": "18:00:00",
+    "chofer": null,
+    "camion": null,
+    "carga": "Herramientas",
+    "estado": "vencido",
+    "daños": false,
+    "multas": false,
+    "sede": 1
+  }
+},
+{
+  "model": "flota.viaje",
+  "pk": 17,
+  "fields": {
+    "ciudad_origen": "CABA",
+    "provincia_origen": "Buenos Aires",
+    "ciudad_destino": "Formosa",
+    "provincia_destino": "Formosa",
+    "kilometros": 1100,
+    "combustible_estimado": 120,
+    "fecha_salida": "2026-07-23",
+    "hora_salida": "08:00:00",
+    "fecha_llegada": "2026-07-23",
+    "hora_llegada": "18:00:00",
+    "chofer": 13,
+    "camion": 15,
+    "carga": "Papas",
+    "estado": "incidente",
+    "daños": true,
+    "multas": true,
+    "sede": 1
+  }
+},
+{
+  "model": "flota.viaje",
+  "pk": 18,
+  "fields": {
+    "ciudad_origen": "Rosario",
+    "provincia_origen": "Santa Fé",
+    "ciudad_destino": "Santa Rosa",
+    "provincia_destino": "La Pampa",
+    "kilometros": 250,
+    "combustible_estimado": 50,
+    "fecha_salida": "2026-07-23",
+    "hora_salida": "08:00:00",
+    "fecha_llegada": "2026-07-24",
+    "hora_llegada": "18:00:00",
+    "chofer": null,
+    "camion": null,
+    "carga": "Madera",
+    "estado": "cancelado",
+    "daños": false,
+    "multas": false,
+    "sede": 4
+  }
+},
+{
+  "model": "flota.viaje",
+  "pk": 19,
+  "fields": {
+    "ciudad_origen": "Santa Fé",
+    "provincia_origen": "Santa Fé",
+    "ciudad_destino": "CABA",
+    "provincia_destino": "Buenos Aires",
+    "kilometros": 468,
+    "combustible_estimado": 60,
+    "fecha_salida": "2026-07-24",
+    "hora_salida": "08:00:00",
+    "fecha_llegada": "2026-07-24",
+    "hora_llegada": "18:00:00",
+    "chofer": null,
+    "camion": null,
+    "carga": "Lácteos",
+    "estado": "vencido",
+    "daños": false,
+    "multas": false,
+    "sede": 2
+  }
+},
+{
+  "model": "flota.viaje",
+  "pk": 20,
+  "fields": {
+    "ciudad_origen": "Santa Fé",
+    "provincia_origen": "Santa Fé",
+    "ciudad_destino": "CABA",
+    "provincia_destino": "Buenos Aires",
+    "kilometros": 468,
+    "combustible_estimado": 60,
+    "fecha_salida": "2026-07-24",
+    "hora_salida": "08:00:00",
+    "fecha_llegada": "2026-07-24",
+    "hora_llegada": "18:00:00",
+    "chofer": 3,
+    "camion": 8,
+    "carga": "Electrodomésticos",
+    "estado": "incidente",
+    "daños": true,
+    "multas": false,
+    "sede": 2
+  }
+},
+{
+  "model": "flota.viaje",
+  "pk": 21,
+  "fields": {
+    "ciudad_origen": "Mar del Plata",
+    "provincia_origen": "Buenos Aires",
+    "ciudad_destino": "Villa Carlos Paz",
+    "provincia_destino": "Córdoba",
+    "kilometros": 800,
+    "combustible_estimado": 120,
+    "fecha_salida": "2026-07-28",
+    "hora_salida": "16:05:00",
+    "fecha_llegada": "2026-07-28",
+    "hora_llegada": "16:08:00",
+    "chofer": 4,
+    "camion": 3,
+    "carga": "Combustible",
+    "estado": "completado",
+    "daños": false,
+    "multas": false,
+    "sede": 5
+  }
+},
+{
+  "model": "flota.viaje",
+  "pk": 22,
+  "fields": {
+    "ciudad_origen": "La Plata",
+    "provincia_origen": "Buenos Aires",
+    "ciudad_destino": "Mercedes",
+    "provincia_destino": "Buenos Aires",
+    "kilometros": 290,
+    "combustible_estimado": null,
+    "fecha_salida": "2026-07-28",
+    "hora_salida": "16:04:00",
+    "fecha_llegada": "2026-07-28",
+    "hora_llegada": "16:07:00",
+    "chofer": 9,
+    "camion": 18,
+    "carga": "Lácteos",
+    "estado": "completado",
+    "daños": false,
+    "multas": false,
+    "sede": 3
+  }
+},
+{
+  "model": "flota.viaje",
+  "pk": 23,
+  "fields": {
+    "ciudad_origen": "Santa Fé",
+    "provincia_origen": "Santa Fé",
+    "ciudad_destino": "Buenos Aires",
+    "provincia_destino": "Buenos Aires",
+    "kilometros": 500,
+    "combustible_estimado": null,
+    "fecha_salida": "2026-07-28",
+    "hora_salida": "20:00:00",
+    "fecha_llegada": "2026-07-28",
+    "hora_llegada": "20:22:00",
+    "chofer": 7,
+    "camion": 4,
+    "carga": "Flores",
+    "estado": "completado",
+    "daños": false,
+    "multas": false,
+    "sede": 2
+  }
+},
+{
+  "model": "flota.viaje",
+  "pk": 24,
+  "fields": {
+    "ciudad_origen": "La Plata",
+    "provincia_origen": "Buenos Aires",
+    "ciudad_destino": "San Nicolás",
+    "provincia_destino": "Buenos Aires",
+    "kilometros": 500,
+    "combustible_estimado": null,
+    "fecha_salida": "2026-07-28",
+    "hora_salida": "16:18:00",
+    "fecha_llegada": "2026-07-28",
+    "hora_llegada": "16:20:00",
+    "chofer": 9,
+    "camion": 18,
+    "carga": "Pescado",
+    "estado": "completado",
+    "daños": false,
+    "multas": false,
+    "sede": 3
+  }
+},
+{
+  "model": "flota.viaje",
+  "pk": 25,
+  "fields": {
+    "ciudad_origen": "CABA",
+    "provincia_origen": "Buenos Aires",
+    "ciudad_destino": "Buenos Aires",
+    "provincia_destino": "Buenos Aires",
+    "kilometros": 110,
+    "combustible_estimado": null,
+    "fecha_salida": "2026-07-28",
+    "hora_salida": "16:38:00",
+    "fecha_llegada": "2026-07-28",
+    "hora_llegada": "16:40:00",
+    "chofer": 12,
+    "camion": 12,
+    "carga": "Pescado",
+    "estado": "completado",
+    "daños": false,
+    "multas": false,
+    "sede": 1
+  }
+},
+{
+  "model": "flota.viaje",
+  "pk": 26,
+  "fields": {
+    "ciudad_origen": "La Plata",
+    "provincia_origen": "Buenos Aires",
+    "ciudad_destino": "Buenos Aires",
+    "provincia_destino": "Buenos Aires",
+    "kilometros": 170,
+    "combustible_estimado": null,
+    "fecha_salida": "2026-07-28",
+    "hora_salida": "16:44:00",
+    "fecha_llegada": "2026-07-28",
+    "hora_llegada": "16:45:00",
+    "chofer": 9,
+    "camion": 18,
+    "carga": "Papas",
+    "estado": "completado",
+    "daños": false,
+    "multas": false,
+    "sede": 3
+  }
+},
+{
+  "model": "flota.viaje",
+  "pk": 27,
+  "fields": {
+    "ciudad_origen": "Rosario",
+    "provincia_origen": "Santa Fé",
+    "ciudad_destino": "Viedma",
+    "provincia_destino": "Río Negro",
+    "kilometros": 700,
+    "combustible_estimado": null,
+    "fecha_salida": "2026-07-28",
+    "hora_salida": "17:26:00",
+    "fecha_llegada": "2026-07-28",
+    "hora_llegada": "17:28:00",
+    "chofer": 17,
+    "camion": 22,
+    "carga": "Alimentos",
+    "estado": "completado",
+    "daños": false,
+    "multas": false,
+    "sede": 4
+  }
+},
+{
+  "model": "flota.viaje",
+  "pk": 29,
+  "fields": {
+    "ciudad_origen": "Rosario",
+    "provincia_origen": "Santa Fé",
+    "ciudad_destino": "Posadas",
+    "provincia_destino": "Misiones",
+    "kilometros": 600,
+    "combustible_estimado": 135,
+    "fecha_salida": "2026-07-28",
+    "hora_salida": "17:36:00",
+    "fecha_llegada": "2026-07-28",
+    "hora_llegada": "17:37:00",
+    "chofer": null,
+    "camion": null,
+    "carga": "Bebidas",
+    "estado": "vencido",
+    "daños": false,
+    "multas": false,
+    "sede": 4
+  }
+},
+{
+  "model": "flota.viaje",
+  "pk": 30,
+  "fields": {
+    "ciudad_origen": "Rosario",
+    "provincia_origen": "Santa Fé",
+    "ciudad_destino": "CABA",
+    "provincia_destino": "Buenos Aires",
+    "kilometros": 500,
+    "combustible_estimado": 70,
+    "fecha_salida": "2026-07-28",
+    "hora_salida": "17:37:00",
+    "fecha_llegada": "2026-07-28",
+    "hora_llegada": "17:38:00",
+    "chofer": 17,
+    "camion": 22,
+    "carga": "Bebidas",
+    "estado": "completado",
+    "daños": false,
+    "multas": false,
+    "sede": 4
+  }
+},
+{
+  "model": "flota.viaje",
+  "pk": 31,
+  "fields": {
+    "ciudad_origen": "La Plata",
+    "provincia_origen": "Buenos Aires",
+    "ciudad_destino": "CABA",
+    "provincia_destino": "Buenos Aires",
+    "kilometros": 160,
+    "combustible_estimado": null,
+    "fecha_salida": "2026-07-30",
+    "hora_salida": "16:54:00",
+    "fecha_llegada": "2026-07-30",
+    "hora_llegada": "16:55:00",
+    "chofer": 9,
+    "camion": 18,
+    "carga": "Alimentos",
+    "estado": "incidente",
+    "daños": true,
+    "multas": true,
+    "sede": 3
+  }
+},
+{
+  "model": "flota.viaje",
+  "pk": 32,
+  "fields": {
+    "ciudad_origen": "CABA",
+    "provincia_origen": "Buenos Aires",
+    "ciudad_destino": "Rosario",
+    "provincia_destino": "Santa Fé",
+    "kilometros": 400,
+    "combustible_estimado": null,
+    "fecha_salida": "2026-07-30",
+    "hora_salida": "16:55:00",
+    "fecha_llegada": "2026-07-30",
+    "hora_llegada": "16:56:00",
+    "chofer": 12,
+    "camion": 12,
+    "carga": "Papas",
+    "estado": "incidente",
+    "daños": true,
+    "multas": false,
+    "sede": 1
+  }
+},
+{
+  "model": "flota.viaje",
+  "pk": 33,
+  "fields": {
+    "ciudad_origen": "Rosario",
+    "provincia_origen": "Santa Fé",
+    "ciudad_destino": "Santa Fé",
+    "provincia_destino": "Santa Fé",
+    "kilometros": 200,
+    "combustible_estimado": null,
+    "fecha_salida": "2026-07-30",
+    "hora_salida": "16:55:00",
+    "fecha_llegada": "2026-07-30",
+    "hora_llegada": "16:56:00",
+    "chofer": 17,
+    "camion": 22,
+    "carga": "Electrodomésticos",
+    "estado": "incidente",
+    "daños": true,
+    "multas": false,
+    "sede": 4
+  }
+}
+]

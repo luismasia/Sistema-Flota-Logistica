@@ -1,5 +1,7 @@
 from django.contrib import admin
-from .models import Sede, Chofer, Camion, Viaje
+from .models import Sede, Chofer, Camion, Viaje, Empresa
+
+admin.site.register(Empresa)
 
 @admin.register(Sede)
 class SedeAdmin(admin.ModelAdmin):
