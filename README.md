@@ -12,8 +12,8 @@ Plataforma web Full Stack desarrollada para la administración integral de vehí
 
 ## 🛠️ Tecnologías Utilizadas
 
-*   **Backend:** Python 3, Django
-*   **Frontend:** HTML5, CSS3, Bootstrap 5, Vanilla JavaScript (API Fetch)
+*   **Backend:** Python, Django
+*   **Frontend:** HTML, CSS, Bootstrap, Vanilla JavaScript (API Fetch)
 *   **Base de Datos:** SQLite (Django ORM)
 *   **Control de Versiones:** Git, GitHub
 
