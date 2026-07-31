@@ -17,33 +17,42 @@ Plataforma web Full Stack desarrollada para la administración integral de vehí
 *   **Base de Datos:** SQLite (Django ORM)
 *   **Control de Versiones:** Git, GitHub
 
+## 🌐 Demo en Vivo
+
+<a href="https://sistema-flota-logistica.onrender.com" target="_blank"><img src="https://img.shields.io/badge/Ver_Demo-00C7B7?style=for-the-badge&logo=render&logoColor=white" alt="Demo en vivo"></a>
+
+> ⚠️ **Nota:** al estar alojado en el plan gratuito de Render, el servicio puede tardar unos segundos en cargar en la primera visita tras un período de inactividad.
+
+Los datos de la demo se resetean automáticamente cada 10 minutos a su estado inicial, para que la experiencia se mantenga limpia y consistente para todos los visitantes.
+
 ## ⚙️ Instalación y Ejecución Local
-
-Siga estos pasos para correr el proyecto en tu entorno local:
-
+Siga estos pasos para correr el proyecto en su entorno local:
 1. **Clonar el repositorio:**\
-   git clone [https://github.com/luismasia/Sistema-Flota-Logistica.git](https://github.com/luismasia/Sistema-Flota-Logistica.git)\
+   git clone https://github.com/luismasia/Sistema-Flota-Logistica.git \
    cd Sistema-Flota-Logistica
-
 2. **Crear y activar un entorno virtual:**\
    En Windows:\
    python -m venv venv\
    venv\Scripts\activate
-
+   
    En macOS/Linux:\
    python3 -m venv venv\
    source venv/bin/activate
-
-3. **Instalar las dependencias:**\
+4. **Instalar las dependencias:**\
    pip install -r requirements.txt
-
-4. **Aplicar las migraciones a la base de datos:**\
+5. **Configurar las variables de entorno:**\
+   Cree un archivo `.env` en la raíz del proyecto con el siguiente contenido:\
+   SECRET_KEY=tu-clave-secreta-aqui\
+   DEBUG=True\
+   ALLOWED_HOSTS=127.0.0.1,localhost
+   
+   Puede generar una SECRET_KEY con:\
+   python -c "import secrets; print(secrets.token_urlsafe(50))"
+7. **Aplicar las migraciones a la base de datos:**\
    python manage.py migrate
-
-5. **Crear un superusuario (opcional, para acceder al panel de admin):**\
+8. **Crear un superusuario (opcional, para acceder al panel de admin):**\
    python manage.py createsuperuser
-
-6. **Ejecutar el servidor de desarrollo:**\
+9. **Ejecutar el servidor de desarrollo:**\
    python manage.py runserver
 
 ## 💻 Autor
