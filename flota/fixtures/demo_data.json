@@ -21,8 +21,8 @@
   "model": "flota.sede",
   "pk": 2,
   "fields": {
-    "ciudad": "Santa FÈ",
-    "provincia": "Santa FÈ"
+    "ciudad": "Santa F√©",
+    "provincia": "Santa F√©"
   }
 },
 {
@@ -38,7 +38,7 @@
   "pk": 4,
   "fields": {
     "ciudad": "Rosario",
-    "provincia": "Santa FÈ"
+    "provincia": "Santa F√©"
   }
 },
 {
@@ -53,8 +53,8 @@
   "model": "flota.chofer",
   "pk": 3,
   "fields": {
-    "nombre": "Juli·n",
-    "apellido": "PÈrez",
+    "nombre": "Juli√°n",
+    "apellido": "P√©rez",
     "fecha_ingreso": "2022-11-25",
     "estado": "disponible",
     "sede": 2
@@ -75,8 +75,8 @@
   "model": "flota.chofer",
   "pk": 5,
   "fields": {
-    "nombre": "Ra˙l",
-    "apellido": "JimÈnez",
+    "nombre": "Ra√∫l",
+    "apellido": "Jim√©nez",
     "fecha_ingreso": "2023-04-04",
     "estado": "inactivo",
     "sede": 5
@@ -86,7 +86,7 @@
   "model": "flota.chofer",
   "pk": 6,
   "fields": {
-    "nombre": "Fabi·n",
+    "nombre": "Fabi√°n",
     "apellido": "Mercado",
     "fecha_ingreso": "2026-07-16",
     "estado": "inactivo",
@@ -108,7 +108,7 @@
   "model": "flota.chofer",
   "pk": 9,
   "fields": {
-    "nombre": "HÈctor",
+    "nombre": "H√©ctor",
     "apellido": "Ferrari",
     "fecha_ingreso": "2026-07-16",
     "estado": "disponible",
@@ -120,7 +120,7 @@
   "pk": 10,
   "fields": {
     "nombre": "Eduardo",
-    "apellido": "FalcÛn",
+    "apellido": "Falc√≥n",
     "fecha_ingreso": "2026-07-21",
     "estado": "disponible",
     "sede": 1
@@ -142,7 +142,7 @@
   "pk": 13,
   "fields": {
     "nombre": "Marco",
-    "apellido": "RodrÌguez",
+    "apellido": "Rodr√≠guez",
     "fecha_ingreso": "2026-07-23",
     "estado": "disponible",
     "sede": 1
@@ -153,7 +153,7 @@
   "pk": 17,
   "fields": {
     "nombre": "Carlos",
-    "apellido": "MÈndez",
+    "apellido": "M√©ndez",
     "fecha_ingreso": "2026-07-28",
     "estado": "disponible",
     "sede": 4
@@ -165,11 +165,11 @@
   "fields": {
     "modelo": "Scania 113h",
     "patente": "RBC 123",
-    "aÒo": 1992,
+    "a√±o": 1992,
     "kilometraje": 546353,
     "estado": "disponible",
     "chofer": 3,
-    "daÒos": false,
+    "da√±os": false,
     "multas": false,
     "sede": 2
   }
@@ -180,11 +180,11 @@
   "fields": {
     "modelo": "Mercedes Benz Actros",
     "patente": "IMS 228",
-    "aÒo": 2010,
+    "a√±o": 2010,
     "kilometraje": 320000,
     "estado": "inactivo",
     "chofer": null,
-    "daÒos": false,
+    "da√±os": false,
     "multas": false,
     "sede": 5
   }
@@ -195,11 +195,11 @@
   "fields": {
     "modelo": "Mercedes Benz New Actros",
     "patente": "KUT 342",
-    "aÒo": 2012,
+    "a√±o": 2012,
     "kilometraje": 100000,
     "estado": "disponible",
     "chofer": 4,
-    "daÒos": false,
+    "da√±os": false,
     "multas": false,
     "sede": 5
   }
@@ -210,11 +210,11 @@
   "fields": {
     "modelo": "Iveco Stralis Hi-Way",
     "patente": "IME 214",
-    "aÒo": 2010,
+    "a√±o": 2010,
     "kilometraje": 700000,
     "estado": "disponible",
     "chofer": 7,
-    "daÒos": false,
+    "da√±os": false,
     "multas": false,
     "sede": 2
   }
@@ -225,11 +225,11 @@
   "fields": {
     "modelo": "Volvo FH16 460",
     "patente": "IMR 500",
-    "aÒo": 2010,
+    "a√±o": 2010,
     "kilometraje": 320000,
     "estado": "inactivo",
     "chofer": null,
-    "daÒos": false,
+    "da√±os": false,
     "multas": false,
     "sede": 3
   }
@@ -240,11 +240,11 @@
   "fields": {
     "modelo": "Scania R450",
     "patente": "ONF 232",
-    "aÒo": 2015,
+    "a√±o": 2015,
     "kilometraje": 650000,
     "estado": "inactivo",
     "chofer": null,
-    "daÒos": false,
+    "da√±os": false,
     "multas": false,
     "sede": 5
   }
@@ -255,11 +255,11 @@
   "fields": {
     "modelo": "Iveco Stralis",
     "patente": "ONW 732",
-    "aÒo": 2015,
+    "a√±o": 2015,
     "kilometraje": 110000,
     "estado": "inactivo",
     "chofer": null,
-    "daÒos": false,
+    "da√±os": false,
     "multas": false,
     "sede": 2
   }
@@ -270,11 +270,11 @@
   "fields": {
     "modelo": "Scania S550",
     "patente": "AB 547 CD",
-    "aÒo": 2017,
+    "a√±o": 2017,
     "kilometraje": 270000,
     "estado": "disponible",
     "chofer": 13,
-    "daÒos": false,
+    "da√±os": false,
     "multas": true,
     "sede": 1
   }
@@ -285,11 +285,11 @@
   "fields": {
     "modelo": "Volvo FH12 460",
     "patente": "KUW 234",
-    "aÒo": 2012,
+    "a√±o": 2012,
     "kilometraje": 310000,
-    "estado": "daÒado",
+    "estado": "da√±ado",
     "chofer": null,
-    "daÒos": true,
+    "da√±os": true,
     "multas": false,
     "sede": 1
   }
@@ -300,11 +300,11 @@
   "fields": {
     "modelo": "Renault Premium",
     "patente": "JNH 254",
-    "aÒo": 2011,
+    "a√±o": 2011,
     "kilometraje": 285000,
     "estado": "disponible",
     "chofer": 10,
-    "daÒos": false,
+    "da√±os": false,
     "multas": false,
     "sede": 1
   }
@@ -315,11 +315,11 @@
   "fields": {
     "modelo": "Renault Premium",
     "patente": "YTG 400",
-    "aÒo": 2013,
+    "a√±o": 2013,
     "kilometraje": 180000,
     "estado": "inactivo",
     "chofer": null,
-    "daÒos": false,
+    "da√±os": false,
     "multas": false,
     "sede": 1
   }
@@ -330,11 +330,11 @@
   "fields": {
     "modelo": "Renault Magnum",
     "patente": "AEY 756",
-    "aÒo": 2007,
+    "a√±o": 2007,
     "kilometraje": 109929,
     "estado": "inactivo",
     "chofer": null,
-    "daÒos": false,
+    "da√±os": false,
     "multas": false,
     "sede": 3
   }
@@ -345,11 +345,11 @@
   "fields": {
     "modelo": "Renault T",
     "patente": "AC 173 FG",
-    "aÒo": 2017,
+    "a√±o": 2017,
     "kilometraje": 36500,
-    "estado": "daÒado",
+    "estado": "da√±ado",
     "chofer": null,
-    "daÒos": true,
+    "da√±os": true,
     "multas": true,
     "sede": 3
   }
@@ -360,11 +360,11 @@
   "fields": {
     "modelo": "Iveco Tector",
     "patente": "ONU 234",
-    "aÒo": 2015,
+    "a√±o": 2015,
     "kilometraje": 120000,
     "estado": "inactivo",
     "chofer": null,
-    "daÒos": false,
+    "da√±os": false,
     "multas": false,
     "sede": 4
   }
@@ -375,11 +375,11 @@
   "fields": {
     "modelo": "Ford Cargo",
     "patente": "YRT 254",
-    "aÒo": 2013,
+    "a√±o": 2013,
     "kilometraje": 70543,
-    "estado": "daÒado",
+    "estado": "da√±ado",
     "chofer": null,
-    "daÒos": true,
+    "da√±os": true,
     "multas": false,
     "sede": 4
   }
@@ -390,8 +390,8 @@
   "fields": {
     "ciudad_origen": "CABA",
     "provincia_origen": "Buenos Aires",
-    "ciudad_destino": "Santa FÈ",
-    "provincia_destino": "Santa FÈ",
+    "ciudad_destino": "Santa F√©",
+    "provincia_destino": "Santa F√©",
     "kilometros": 468,
     "combustible_estimado": 100,
     "fecha_salida": "2026-07-23",
@@ -402,7 +402,7 @@
     "camion": 12,
     "carga": "Ropa",
     "estado": "incidente",
-    "daÒos": true,
+    "da√±os": true,
     "multas": true,
     "sede": 1
   }
@@ -414,7 +414,7 @@
     "ciudad_origen": "CABA",
     "provincia_origen": "Buenos Aires",
     "ciudad_destino": "Rosario",
-    "provincia_destino": "Santa FÈ",
+    "provincia_destino": "Santa F√©",
     "kilometros": 390,
     "combustible_estimado": 60,
     "fecha_salida": "2026-07-24",
@@ -425,7 +425,7 @@
     "camion": 10,
     "carga": "Bebidas",
     "estado": "completado",
-    "daÒos": false,
+    "da√±os": false,
     "multas": false,
     "sede": 1
   }
@@ -436,7 +436,7 @@
   "fields": {
     "ciudad_origen": "CABA",
     "provincia_origen": "Buenos Aires",
-    "ciudad_destino": "Luj·n",
+    "ciudad_destino": "Luj√°n",
     "provincia_destino": "Buenos Aires",
     "kilometros": 100,
     "combustible_estimado": 20,
@@ -448,7 +448,7 @@
     "camion": null,
     "carga": "Herramientas",
     "estado": "vencido",
-    "daÒos": false,
+    "da√±os": false,
     "multas": false,
     "sede": 1
   }
@@ -471,7 +471,7 @@
     "camion": 15,
     "carga": "Papas",
     "estado": "incidente",
-    "daÒos": true,
+    "da√±os": true,
     "multas": true,
     "sede": 1
   }
@@ -481,7 +481,7 @@
   "pk": 18,
   "fields": {
     "ciudad_origen": "Rosario",
-    "provincia_origen": "Santa FÈ",
+    "provincia_origen": "Santa F√©",
     "ciudad_destino": "Santa Rosa",
     "provincia_destino": "La Pampa",
     "kilometros": 250,
@@ -494,7 +494,7 @@
     "camion": null,
     "carga": "Madera",
     "estado": "cancelado",
-    "daÒos": false,
+    "da√±os": false,
     "multas": false,
     "sede": 4
   }
@@ -503,8 +503,8 @@
   "model": "flota.viaje",
   "pk": 19,
   "fields": {
-    "ciudad_origen": "Santa FÈ",
-    "provincia_origen": "Santa FÈ",
+    "ciudad_origen": "Santa F√©",
+    "provincia_origen": "Santa F√©",
     "ciudad_destino": "CABA",
     "provincia_destino": "Buenos Aires",
     "kilometros": 468,
@@ -515,9 +515,9 @@
     "hora_llegada": "18:00:00",
     "chofer": null,
     "camion": null,
-    "carga": "L·cteos",
+    "carga": "L√°cteos",
     "estado": "vencido",
-    "daÒos": false,
+    "da√±os": false,
     "multas": false,
     "sede": 2
   }
@@ -526,8 +526,8 @@
   "model": "flota.viaje",
   "pk": 20,
   "fields": {
-    "ciudad_origen": "Santa FÈ",
-    "provincia_origen": "Santa FÈ",
+    "ciudad_origen": "Santa F√©",
+    "provincia_origen": "Santa F√©",
     "ciudad_destino": "CABA",
     "provincia_destino": "Buenos Aires",
     "kilometros": 468,
@@ -538,9 +538,9 @@
     "hora_llegada": "18:00:00",
     "chofer": 3,
     "camion": 8,
-    "carga": "ElectrodomÈsticos",
+    "carga": "Electrodom√©sticos",
     "estado": "incidente",
-    "daÒos": true,
+    "da√±os": true,
     "multas": false,
     "sede": 2
   }
@@ -552,7 +552,7 @@
     "ciudad_origen": "Mar del Plata",
     "provincia_origen": "Buenos Aires",
     "ciudad_destino": "Villa Carlos Paz",
-    "provincia_destino": "CÛrdoba",
+    "provincia_destino": "C√≥rdoba",
     "kilometros": 800,
     "combustible_estimado": 120,
     "fecha_salida": "2026-07-28",
@@ -563,7 +563,7 @@
     "camion": 3,
     "carga": "Combustible",
     "estado": "completado",
-    "daÒos": false,
+    "da√±os": false,
     "multas": false,
     "sede": 5
   }
@@ -584,9 +584,9 @@
     "hora_llegada": "16:07:00",
     "chofer": 9,
     "camion": 18,
-    "carga": "L·cteos",
+    "carga": "L√°cteos",
     "estado": "completado",
-    "daÒos": false,
+    "da√±os": false,
     "multas": false,
     "sede": 3
   }
@@ -595,8 +595,8 @@
   "model": "flota.viaje",
   "pk": 23,
   "fields": {
-    "ciudad_origen": "Santa FÈ",
-    "provincia_origen": "Santa FÈ",
+    "ciudad_origen": "Santa F√©",
+    "provincia_origen": "Santa F√©",
     "ciudad_destino": "Buenos Aires",
     "provincia_destino": "Buenos Aires",
     "kilometros": 500,
@@ -609,7 +609,7 @@
     "camion": 4,
     "carga": "Flores",
     "estado": "completado",
-    "daÒos": false,
+    "da√±os": false,
     "multas": false,
     "sede": 2
   }
@@ -620,7 +620,7 @@
   "fields": {
     "ciudad_origen": "La Plata",
     "provincia_origen": "Buenos Aires",
-    "ciudad_destino": "San Nicol·s",
+    "ciudad_destino": "San Nicol√°s",
     "provincia_destino": "Buenos Aires",
     "kilometros": 500,
     "combustible_estimado": null,
@@ -632,7 +632,7 @@
     "camion": 18,
     "carga": "Pescado",
     "estado": "completado",
-    "daÒos": false,
+    "da√±os": false,
     "multas": false,
     "sede": 3
   }
@@ -655,7 +655,7 @@
     "camion": 12,
     "carga": "Pescado",
     "estado": "completado",
-    "daÒos": false,
+    "da√±os": false,
     "multas": false,
     "sede": 1
   }
@@ -678,7 +678,7 @@
     "camion": 18,
     "carga": "Papas",
     "estado": "completado",
-    "daÒos": false,
+    "da√±os": false,
     "multas": false,
     "sede": 3
   }
@@ -688,9 +688,9 @@
   "pk": 27,
   "fields": {
     "ciudad_origen": "Rosario",
-    "provincia_origen": "Santa FÈ",
+    "provincia_origen": "Santa F√©",
     "ciudad_destino": "Viedma",
-    "provincia_destino": "RÌo Negro",
+    "provincia_destino": "R√≠o Negro",
     "kilometros": 700,
     "combustible_estimado": null,
     "fecha_salida": "2026-07-28",
@@ -701,7 +701,7 @@
     "camion": 22,
     "carga": "Alimentos",
     "estado": "completado",
-    "daÒos": false,
+    "da√±os": false,
     "multas": false,
     "sede": 4
   }
@@ -711,7 +711,7 @@
   "pk": 29,
   "fields": {
     "ciudad_origen": "Rosario",
-    "provincia_origen": "Santa FÈ",
+    "provincia_origen": "Santa F√©",
     "ciudad_destino": "Posadas",
     "provincia_destino": "Misiones",
     "kilometros": 600,
@@ -724,7 +724,7 @@
     "camion": null,
     "carga": "Bebidas",
     "estado": "vencido",
-    "daÒos": false,
+    "da√±os": false,
     "multas": false,
     "sede": 4
   }
@@ -734,7 +734,7 @@
   "pk": 30,
   "fields": {
     "ciudad_origen": "Rosario",
-    "provincia_origen": "Santa FÈ",
+    "provincia_origen": "Santa F√©",
     "ciudad_destino": "CABA",
     "provincia_destino": "Buenos Aires",
     "kilometros": 500,
@@ -747,7 +747,7 @@
     "camion": 22,
     "carga": "Bebidas",
     "estado": "completado",
-    "daÒos": false,
+    "da√±os": false,
     "multas": false,
     "sede": 4
   }
@@ -770,7 +770,7 @@
     "camion": 18,
     "carga": "Alimentos",
     "estado": "incidente",
-    "daÒos": true,
+    "da√±os": true,
     "multas": true,
     "sede": 3
   }
@@ -782,7 +782,7 @@
     "ciudad_origen": "CABA",
     "provincia_origen": "Buenos Aires",
     "ciudad_destino": "Rosario",
-    "provincia_destino": "Santa FÈ",
+    "provincia_destino": "Santa F√©",
     "kilometros": 400,
     "combustible_estimado": null,
     "fecha_salida": "2026-07-30",
@@ -793,7 +793,7 @@
     "camion": 12,
     "carga": "Papas",
     "estado": "incidente",
-    "daÒos": true,
+    "da√±os": true,
     "multas": false,
     "sede": 1
   }
@@ -803,9 +803,9 @@
   "pk": 33,
   "fields": {
     "ciudad_origen": "Rosario",
-    "provincia_origen": "Santa FÈ",
-    "ciudad_destino": "Santa FÈ",
-    "provincia_destino": "Santa FÈ",
+    "provincia_origen": "Santa F√©",
+    "ciudad_destino": "Santa F√©",
+    "provincia_destino": "Santa F√©",
     "kilometros": 200,
     "combustible_estimado": null,
     "fecha_salida": "2026-07-30",
@@ -814,9 +814,9 @@
     "hora_llegada": "16:56:00",
     "chofer": 17,
     "camion": 22,
-    "carga": "ElectrodomÈsticos",
+    "carga": "Electrodom√©sticos",
     "estado": "incidente",
-    "daÒos": true,
+    "da√±os": true,
     "multas": false,
     "sede": 4
   }
